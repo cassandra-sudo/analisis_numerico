@@ -835,7 +835,7 @@ en la elección de raíz, a costa de requerir que $f$ sea localmente inyectiva
 
 ---
 
-#### Computing Problems
+### Computing Problems
 
 **7.1** _(a)_  Escriba una rutina que utilice la regla de Horner para evaluar un polinomio $p(t)$ dado su grado $\text{n}$, un array $x$ que contiene sus coeficientes, y el valor $\text{t}$ de la variable independiente en que debe ser evaluado.
 
