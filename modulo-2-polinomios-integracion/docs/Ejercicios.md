@@ -1,33 +1,363 @@
 ## Heath. Scientific Computing
 ### Chapter 7. Interpolation
 
-**7.1**  Dados los tres puntos de datos $(−1, 1)$, $(0, 0)$, $(1, 1)$, determine el polinomio interpolador de grado dos:
+**7.1** Interpolación Polinomial: Tres Bases para los Puntos $(-1,1)$, $(0,0)$, $(1,1)$
 
-_(a)_ Usando la base monomial
+Se desea encontrar el polinomio $p(x)$ de grado $\leq 2$ que pasa por los tres puntos:
 
-_(b)_ Usando la base de Lagrange
+$$(-1,\,1),\quad (0,\,0),\quad (1,\,1)$$
 
-_(c)_ Usando la base de Newton
+---
 
-Muestre que las tres representaciones dan el mismo polinomio.
+#### (a) Base Monomial
+
+Se propone $p(x) = a_0 + a_1 x + a_2 x^2$ y se imponen las condiciones de interpolación:
+
+$$p(-1) = a_0 - a_1 + a_2 = 1$$
+$$p(0)  = a_0              = 0$$
+$$p(1)  = a_0 + a_1 + a_2 = 1$$
+
+De la segunda ecuación: $a_0 = 0$. Sustituyendo en las otras dos:
+
+$$-a_1 + a_2 = 1$$
+$$ a_1 + a_2 = 1$$
+
+Sumando ambas: $2a_2 = 2 \Rightarrow a_2 = 1$. Restando: $2a_1 = 0 \Rightarrow a_1 = 0$.
+
+$$\boxed{p(x) = x^2}$$
+
+---
+
+#### (b) Base de Lagrange
+
+Los polinomios de base de Lagrange para los nodos $x_0=-1$, $x_1=0$, $x_2=1$ son:
+
+$$L_0(x) = \frac{(x - x_1)(x - x_2)}{(x_0 - x_1)(x_0 - x_2)}
+           = \frac{(x-0)(x-1)}{(-1-0)(-1-1)}
+           = \frac{x(x-1)}{2}$$
+
+$$L_1(x) = \frac{(x - x_0)(x - x_2)}{(x_1 - x_0)(x_1 - x_2)}
+           = \frac{(x+1)(x-1)}{(1)(-1)}
+           = -(x^2 - 1) = 1 - x^2$$
+
+$$L_2(x) = \frac{(x - x_0)(x - x_1)}{(x_2 - x_0)(x_2 - x_1)}
+           = \frac{(x+1)(x-0)}{(2)(1)}
+           = \frac{x(x+1)}{2}$$
+
+El polinomio interpolador es:
+
+$$p(x) = f_0\,L_0(x) + f_1\,L_1(x) + f_2\,L_2(x)
+       = 1\cdot\frac{x(x-1)}{2} + 0\cdot(1-x^2) + 1\cdot\frac{x(x+1)}{2}$$
+
+$$p(x) = \frac{x(x-1) + x(x+1)}{2} = \frac{x^2 - x + x^2 + x}{2} = \frac{2x^2}{2}$$
+
+$$\boxed{p(x) = x^2}$$
+
+---
+
+#### (c) Base de Newton (Diferencias Divididas)
+
+Se construye la tabla de diferencias divididas con $x_0=-1$, $x_1=0$, $x_2=1$:
+
+| $x_i$ | $f[\cdot]$ | $f[\cdot,\cdot]$ | $f[\cdot,\cdot,\cdot]$ |
+|:------:|:----------:|:----------------:|:----------------------:|
+| $-1$   | $1$        |                  |                        |
+|        |            | $\dfrac{0-1}{0-(-1)} = -1$ |               |
+| $0$    | $0$        |                  | $\dfrac{1-(-1)}{1-(-1)} = 1$ |
+|        |            | $\dfrac{1-0}{1-0} = 1$    |                |
+| $1$    | $1$        |                  |                        |
+
+Los coeficientes de Newton son:
+$$c_0 = f[x_0] = 1, \qquad c_1 = f[x_0,x_1] = -1, \qquad c_2 = f[x_0,x_1,x_2] = 1$$
+
+El polinomio en forma de Newton es:
+
+$$p(x) = c_0 + c_1(x - x_0) + c_2(x - x_0)(x - x_1)$$
+
+$$p(x) = 1 + (-1)(x + 1) + 1\cdot(x+1)(x - 0)$$
+
+$$p(x) = 1 - x - 1 + x(x+1) = -x + x^2 + x$$
+
+$$\boxed{p(x) = x^2}$$
+
+---
+
+#### Conclusión
+
+Las tres representaciones producen exactamente el mismo polinomio:
+
+$$p(x) = x^2$$
+
+Esto es consistente con el **Teorema de unicidad del polinomio interpolador**: dado un conjunto de $n+1$ nodos distintos, existe un **único** polinomio de grado $\leq n$ que los interpola. Las bases monomial, de Lagrange y de Newton son distintas representaciones del mismo objeto matemático.
 
 **7.2**  Exprese el siguiente polinomio en la forma correcta para su evaluación mediante el método de Horner: 
 $$p(t) = 5t^3 - 3t^2 + 7t - 2.$$
 
+**Idea del método**
+
+El método de Horner (o evaluación anidada) reescribe el polinomio factorizando sucesivamente $t$ de adentro hacia afuera, minimizando el número de operaciones aritméticas. Para un polinomio de grado $n$:
+
+$$p(t) = a_n t^n + a_{n-1}t^{n-1} + \cdots + a_1 t + a_0$$
+
+la forma anidada es:
+
+$$p(t) = (\cdots((a_n\, t + a_{n-1})\,t + a_{n-2})\,t + \cdots + a_1)\,t + a_0$$
+
+---
+
+**Desarrollo para $p(t) = 5t^3 - 3t^2 + 7t - 2$**
+
+Los coeficientes en orden descendente son $a_3=5,\ a_2=-3,\ a_1=7,\ a_0=-2$.
+
+**Paso 1.** Se parte del coeficiente líder:
+
+$$5$$
+
+**Paso 2.** Se multiplica por $t$ y se suma $a_2 = -3$:
+
+$$5t + (-3) = 5t - 3$$
+
+**Paso 3.** Se multiplica por $t$ y se suma $a_1 = 7$:
+
+$$(5t - 3)\,t + 7 = 5t^2 - 3t + 7$$
+
+**Paso 4.** Se multiplica por $t$ y se suma $a_0 = -2$:
+
+$$(5t^2 - 3t + 7)\,t + (-2) = 5t^3 - 3t^2 + 7t - 2 \checkmark$$
+
+---
+
+**Forma anidada final**
+
+$$\boxed{p(t) = \bigl((5\,t - 3)\,t + 7\bigr)\,t - 2}$$
+
+---
+
+**Ejemplo numérico: evaluación en $t = 2$**
+
+| Paso | Operación                     | Resultado |
+|:----:|:------------------------------|:---------:|
+| 1    | $b_3 = 5$                     | $5$       |
+| 2    | $b_2 = 5 \times 2 + (-3)$     | $7$       |
+| 3    | $b_1 = 7 \times 2 + 7$        | $21$      |
+| 4    | $b_0 = 21 \times 2 + (-2)$    | $40$      |
+
+$$p(2) = 5(8) - 3(4) + 7(2) - 2 = 40 - 12 + 14 - 2 = 40 \checkmark$$
+
+---
+
+**Ventaja computacional**
+
+| Método          | Multiplicaciones | Sumas/Restas |
+|:----------------|:----------------:|:------------:|
+| Directo         | $6$              | $3$          |
+| **Horner**      | **$3$**          | **$3$**      |
+
+En general, para grado $n$, Horner requiere exactamente $n$ multiplicaciones
+y $n$ sumas, frente a las $\tfrac{n(n+1)}{2}$ multiplicaciones del método directo.
+
 **7.3** Escriba un algoritmo formal para evaluar un polinomio en un argumento dado utilizando el esquema de evaluación anidada de Horner.
 
-_(a)_ Para un polinomio expresado en términos de la base
-monomial.
+_(a)_ Para un polinomio expresado en términos de la base monomial.
+
+Dado el polinomio de grado $n$ en base monomial:
+
+$$p(t) = a_n t^n + a_{n-1}t^{n-1} + \cdots + a_1 t + a_0 = \sum_{k=0}^{n} a_k\, t^k$$
+
+y un argumento $t = x$, evaluar $p(x)$ de forma eficiente.
+
+**Forma anidada**
+
+$$p(x) = (\cdots((a_n\, x + a_{n-1})\,x + a_{n-2})\,x + \cdots + a_1)\,x + a_0$$
+
+#### Algoritmo
+
+**Entrada:** coeficientes $a_0, a_1, \ldots, a_n \in \mathbb{R}$; punto de evaluación $x \in \mathbb{R}$  
+**Salida:** $p(x)$
+
+---
+```
+ALGORITMO Horner_Monomial(a[0..n], x):
+
+    b ← a[n]                        // inicializar con el coeficiente líder
+
+    PARA k = n-1 HASTA 0 (paso -1):
+        b ← b * x + a[k]            // acumulación anidada
+
+    RETORNAR b
+```
+
+---
+
+#### Traza para $p(t) = 5t^3 - 3t^2 + 7t - 2$, $\;x = 2$
+
+Coeficientes en orden descendente: $a_3=5,\; a_2=-3,\; a_1=7,\; a_0=-2$.
+
+| Iteración $k$ | Operación                  | $b$  |
+|:-------------:|:---------------------------|:----:|
+| inicio        | $b \leftarrow a_3 = 5$     | $5$  |
+| $k=2$         | $b \leftarrow 5\cdot2+(-3)$| $7$  |
+| $k=1$         | $b \leftarrow 7\cdot2+7$   | $21$ |
+| $k=0$         | $b \leftarrow 21\cdot2+(-2)$| $40$|
+
+$$p(2) = 40 \checkmark$$
+
+---
 
 _(b)_ Para un polinomio expresado en forma de Newton.
 
-**7.4** ¿Cuántas multiplicaciones se requieren para evaluar un polinomio $p(t)$ de grado $n-1$ en un punto dado $t$.
+Dado el polinomio de grado $n$ en base de Newton con nodos $x_0, x_1, \ldots, x_{n-1}$:
+
+$$p(t) = c_0 + c_1(t-x_0) + c_2(t-x_0)(t-x_1) + \cdots + c_n\prod_{k=0}^{n-1}(t - x_k)$$
+
+donde $c_k = f[x_0, x_1, \ldots, x_k]$ son las diferencias divididas, evaluar $p(x)$.
+
+#### Forma anidada
+
+Factorizando desde el término más interno:
+
+$$p(x) = c_0 + (x-x_0)\Bigl(c_1 + (x-x_1)\bigl(c_2 + \cdots + (x-x_{n-2})(c_{n-1} + c_n(x-x_{n-1}))\cdots\bigr)\Bigr)$$
+
+#### Algoritmo
+
+**Entrada:** coeficientes $c_0, c_1, \ldots, c_n \in \mathbb{R}$; nodos $x_0, x_1, \ldots, x_{n-1} \in \mathbb{R}$; punto de evaluación $x \in \mathbb{R}$  
+**Salida:** $p(x)$
+
+---
+```
+ALGORITMO Horner_Newton(c[0..n], x_nodos[0..n-1], x):
+
+    b ← c[n]                              // inicializar con el último coeficiente
+
+    PARA k = n-1 HASTA 0 (paso -1):
+        b ← b * (x - x_nodos[k]) + c[k]  // acumulación anidada con nodo k
+
+    RETORNAR b
+```
+
+---
+
+#### Traza para los puntos $(-1,1),(0,0),(1,1)$, $\;x = 2$
+
+De la tabla de diferencias divididas (ver interpolación de Lagrange-Newton):
+$$c_0 = 1,\quad c_1 = -1,\quad c_2 = 1, \qquad x_0=-1,\; x_1=0$$
+
+| Iteración $k$ | Operación                              | $b$  |
+|:-------------:|:---------------------------------------|:----:|
+| inicio        | $b \leftarrow c_2 = 1$                 | $1$  |
+| $k=1$         | $b \leftarrow 1\cdot(2-0)+(-1)$        | $1$  |
+| $k=0$         | $b \leftarrow 1\cdot(2-(-1))+1$        | $4$  |
+
+$$p(2) = 4 = 2^2 \checkmark$$
+
+---
+
+### Comparación de ambos algoritmos
+
+| Característica        | Base Monomial                     | Base de Newton                          |
+|:----------------------|:----------------------------------|:----------------------------------------|
+| **Coeficientes**      | $a_0, a_1, \ldots, a_n$           | $c_0, c_1, \ldots, c_n$ (dif. divididas)|
+| **Nodos requeridos**  | Ninguno                           | $x_0, x_1, \ldots, x_{n-1}$            |
+| **Recurrencia**       | $b \leftarrow b\cdot x + a_k$     | $b \leftarrow b\cdot(x-x_k) + c_k$     |
+| **Multiplicaciones**  | $n$                               | $n$                                     |
+| **Sumas/restas**      | $n$                               | $2n$ (incluye $x - x_k$)               |
+| **Caso especial**     | Nodos equidistantes o ninguno     | Nodos arbitrarios                       |
+
+> **Nota:** la base monomial es un caso particular de la base de Newton con
+> $x_0 = x_1 = \cdots = x_{n-1} = 0$, en cuyo caso $x - x_k = x$ para
+> todo $k$ y ambos algoritmos se reducen al mismo esquema.
+
+**7.4** ¿Cuántas multiplicaciones se requieren para evaluar un polinomio $p(t)$ de grado $n-1$ en un punto dado $t = x$.
 
 _(a)_ Representado en base monomial
 
+$$p(t) = a_0 + a_1 t + a_2 t^2 + \cdots + a_{n-1}t^{n-1}$$
+
+#### Método directo (ingenuo)
+
+Cada potencia $t^k$ se calcula multiplicando $k$ veces, y luego se multiplica por $a_k$:
+
+| Término       | Multiplicaciones para $t^k$ | Mult. por $a_k$ | Total del término |
+|:-------------:|:---------------------------:|:---------------:|:-----------------:|
+| $a_1 t$       | $0$                         | $1$             | $1$               |
+| $a_2 t^2$     | $1$                         | $1$             | $2$               |
+| $a_3 t^3$     | $2$                         | $1$             | $3$               |
+| $\vdots$      | $\vdots$                    | $\vdots$        | $\vdots$          |
+| $a_{n-1}t^{n-1}$ | $n-2$                    | $1$             | $n-1$             |
+
+$$\text{Total} = 1 + 2 + \cdots + (n-1) = \frac{n(n-1)}{2} = O(n^2)$$
+
+#### Método de Horner (evaluación anidada)
+
+$$p(t) = a_0 + t\bigl(a_1 + t(a_2 + \cdots + t\,a_{n-1})\bigr)$$
+
+En cada uno de los $n-1$ pasos se realiza exactamente **una** multiplicación por $t$:
+
+$$\boxed{M_{\text{Monomial}}^{\text{Horner}} = n - 1 \text{ multiplicaciones}}$$
+
+---
+
 _(b)_ Representado en base de Lagrange
 
+$$p(t) = \sum_{k=0}^{n-1} f_k\, L_k(t), \qquad L_k(t) = \prod_{\substack{j=0 \\ j\neq k}}^{n-1} \frac{t - t_j}{t_k - t_j}$$
+
+#### Conteo para cada $L_k(t)$
+
+Cada $L_k(t)$ es un producto de $n-1$ factores $\dfrac{t-t_j}{t_k - t_j}$ (con $j \neq k$).  
+Los cocientes $\dfrac{1}{t_k - t_j}$ se precomputan, de modo que por cada factor se necesita:
+
+- $1$ resta: $(t - t_j)$  
+- $1$ multiplicación: por $\dfrac{1}{t_k-t_j}$ ya calculado  
+
+Cada $L_k(t)$ requiere entonces $n-1$ multiplicaciones (para encadenar los $n-1$ factores). Además, multiplicar el resultado por $f_k$ cuesta $1$ multiplicación más.
+
+| Operación                          | Costo por $k$  | Total ($n$ términos)        |
+|:-----------------------------------|:--------------:|:---------------------------:|
+| Producto de $n-1$ factores en $L_k$| $n-2$          | $n(n-2)$                    |
+| Multiplicación $f_k \cdot L_k$     | $1$            | $n$                         |
+
+$$\text{Total} = n(n-2) + n = n^2 - 2n + n = n(n-1)$$
+
+$$\boxed{M_{\text{Lagrange}} = n(n-1) \text{ multiplicaciones} = O(n^2)}$$
+
+> **Nota:** si los denominadores $t_k - t_j$ y los pesos $w_k = \prod_{j\neq k}(t_k-t_j)^{-1}$
+> se precomputan (forma baricéntrica), el costo baja, pero sigue siendo $O(n)$
+> por evaluación con $O(n^2)$ en el preprocesamiento.
+
+---
+
 _(c)_ Representado en base de Newton
+
+$$p(t) = c_0 + c_1(t-t_0) + c_2(t-t_0)(t-t_1) + \cdots + c_{n-1}\prod_{k=0}^{n-2}(t-t_k)$$
+
+#### Forma anidada de Horner
+
+$$p(t) = c_0 + (t-t_0)\Bigl(c_1 + (t-t_1)\bigl(c_2 + \cdots + c_{n-2} + c_{n-1}(t - t_{n-2})\bigr)\Bigr)$$
+
+En cada uno de los $n-1$ pasos se realiza exactamente **una** multiplicación por $(t - t_k)$:
+
+$$\boxed{M_{\text{Newton}}^{\text{Horner}} = n-1 \text{ multiplicaciones}}$$
+
+---
+
+#### Resumen comparativo
+
+| Base         | Método          | Multiplicaciones     | Orden    |
+|:-------------|:----------------|:--------------------:|:--------:|
+| Monomial     | Ingenuo         | $\dfrac{n(n-1)}{2}$ | $O(n^2)$ |
+| **Monomial** | **Horner**      | $\mathbf{n-1}$       | $O(n)$   |
+| Lagrange     | Estándar        | $n(n-1)$             | $O(n^2)$ |
+| **Newton**   | **Horner**      | $\mathbf{n-1}$       | $O(n)$   |
+
+#### Conclusión
+
+Las bases **monomial** y **de Newton** evaluadas con el esquema de Horner
+son igualmente óptimas: ambas requieren el **mínimo posible** de $n-1$
+multiplicaciones para un polinomio de grado $n-1$.
+La base de **Lagrange** en su forma estándar es cuadrática en operaciones,
+lo que la hace computacionalmente menos eficiente para evaluación puntual.
+
+---
 
 **7.5**  En general, ¿es posible interpolar $n$ puntos de datos mediante un polinomio _cuadrático_ por partes, con nodos en los puntos de datos dados, de manera que el interpolante sea
 
@@ -37,9 +367,182 @@ _(b)_ ¿Continuamente diferenciable dos veces?
 
 En cada caso, si la respuesta es "sí", explique por qué, y si la respuesta es "no", indique el valor máximo de _n_ para el cual _es_ posible.
 
+Dados $n$ puntos de datos $(t_0, y_0), (t_1, y_1), \ldots, (t_{n-1}, y_{n-1})$, se construye un **spline cuadrático por partes** con nodos en los puntos dados: en cada subintervalo $[t_{i-1}, t_i]$ se define un polinomio cuadrático $q_i(t)$, para $i = 1, \ldots, n-1$.
+
+### Conteo de grados de libertad
+
+| Cantidad                          | Valor        |
+|:----------------------------------|:------------:|
+| Subintervalos                     | $n-1$        |
+| Coeficientes por pieza (grado 2)  | $3$          |
+| **Total de incógnitas**           | $3(n-1)$     |
+
+### Condiciones de interpolación
+
+Cada pieza debe pasar por sus dos nodos extremos:
+$$q_i(t_{i-1}) = y_{i-1}, \quad q_i(t_i) = y_i, \qquad i = 1, \ldots, n-1$$
+
+Esto impone $2(n-1)$ condiciones, que además garantizan automáticamente la
+continuidad $C^0$ en los $n-2$ nodos interiores.
+
+$$\text{Grados de libertad restantes} = 3(n-1) - 2(n-1) = \boxed{n-1}$$
+
+---
+
+#### (a) ¿Es posible exigir $C^1$?
+
+Se requiere igualdad de derivadas primeras en cada uno de los $n-2$ nodos interiores
+$t_1, t_2, \ldots, t_{n-2}$:
+
+$$q_i'(t_i) = q_{i+1}'(t_i), \qquad i = 1, \ldots, n-2$$
+
+Esto añade $n-2$ condiciones adicionales. El balance queda:
+
+$$\underbrace{(n-1)}_{\text{g.d.l. disponibles}} - \underbrace{(n-2)}_{C^1 \text{ interior}} = 1 \geq 0$$
+
+#### Respuesta: **Sí, siempre es posible.**
+
+Para cualquier $n$, después de imponer interpolación y $C^1$, queda exactamente **1 grado de libertad libre** (por ejemplo, la derivada en el primer nodo $t_0$ puede elegirse libremente). El sistema es siempre compatible.
+
+$$\text{G.d.l. libres tras } C^1 = 1 \quad \forall\, n$$
+
+---
+
+#### (b) ¿Es posible exigir $C^2$?
+
+Sobre los mismos $n-2$ nodos interiores se añade la igualdad de derivadas segundas:
+
+$$q_i''(t_i) = q_{i+1}''(t_i), \qquad i = 1, \ldots, n-2$$
+
+Partiendo del único grado de libertad que quedaba tras $C^1$:
+
+$$\underbrace{1}_{\text{g.d.l. tras }C^1} - \underbrace{(n-2)}_{C^2 \text{ interior}} = 3 - n$$
+
+Para que el sistema sea compatible (no sobredeterminado) se necesita:
+
+$$3 - n \geq 0 \implies n \leq 3$$
+
+#### Respuesta: **No en general; el máximo es $n = 3$.**
+
+| $n$ | G.d.l. tras $C^2$ | Situación                             |
+|:---:|:-----------------:|:--------------------------------------|
+| $2$ | $1$               | Trivial: 1 pieza, siempre $C^\infty$  |
+| $3$ | $0$               | Posible y **único**: $C^2$ exacto     |
+| $4$ | $-1$              | Sistema sobredeterminado, imposible   |
+| $n > 3$ | $3-n < 0$   | Imposible en general                  |
+
+Para $n = 3$ (dos piezas cuadráticas, un nodo interior), la condición $C^2$
+consume el último grado de libertad y determina el spline de forma **única**.
+Para $n \geq 4$, hay más condiciones de suavidad que incógnitas disponibles,
+por lo que no existe tal interpolante en general.
+
+---
+
+#### Resumen
+
+| Condición | ¿Posible para todo $n$? | G.d.l. libres | $n$ máximo si no |
+|:---------:|:----------------------:|:-------------:|:----------------:|
+| $C^1$     | **Sí**                 | $1$           | —                |
+| $C^2$     | **No**                 | $3-n$         | $n \leq 3$       |
+
+> **Conclusión:** la suavidad $C^1$ es siempre alcanzable con splines cuadráticos
+> por partes. Para $C^2$ se requiere al menos polinomios **cúbicos** por partes
+> (splines cúbicos), que son la herramienta estándar para interpolación suave
+> con $n$ puntos arbitrarios.
+
 **7.6** Suponiendo que $t_1, t_2, ..., t_n$ son distintos, demuestre que la matriz de Vandermonde **A** dada por $a_{ij} = t_i^{j-1}$ es no singular.
 
+#### Definición de la matriz
+
+Dados $n$ nodos distintos $t_1, t_2, \ldots, t_n \in \mathbb{R}$, la **matriz de Vandermonde** $A \in \mathbb{R}^{n \times n}$ tiene entradas $a_{ij} = t_i^{j-1}$, es decir:
+
+$$A = \begin{pmatrix}
+1 & t_1 & t_1^2 & \cdots & t_1^{n-1} \\
+1 & t_2 & t_2^2 & \cdots & t_2^{n-1} \\
+1 & t_3 & t_3^2 & \cdots & t_3^{n-1} \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+1 & t_n & t_n^2 & \cdots & t_n^{n-1}
+\end{pmatrix}$$
+
+**Objetivo:** demostrar que $\det(A) \neq 0$ siempre que los $t_i$ sean distintos.
+
+---
+
+#### Fórmula explícita del determinante
+
+Se puede demostrar que:
+
+$$\det(A) = \prod_{1 \leq i < j \leq n} (t_j - t_i)$$
+
+es decir, el producto de todas las diferencias $(t_j - t_i)$ con $j > i$.
+
+#### Demostración por inducción sobre $n$
+
+**Caso base $n = 1$:**
+
+$$A = (1), \qquad \det(A) = 1 = \prod_{\emptyset} = 1 \checkmark$$
+
+**Caso base $n = 2$:**
+
+$$\det\begin{pmatrix} 1 & t_1 \\ 1 & t_2 \end{pmatrix} = t_2 - t_1 = \prod_{1 \leq i < j \leq 2}(t_j - t_i) \checkmark$$
+
+**Hipótesis inductiva:** supóngase que la fórmula vale para matrices de Vandermonde de tamaño $(n-1)\times(n-1)$.
+
+**Paso inductivo:** se considera la matriz $A$ de tamaño $n \times n$.
+Se interpreta $\det(A)$ como un polinomio en $t_n$:
+
+$$p(t_n) = \det(A)$$
+
+Observaciones clave:
+
+1. $\det(A)$ es un polinomio de grado $n-1$ en $t_n$ (la última fila aporta
+   potencias $1, t_n, \ldots, t_n^{n-1}$, y el coeficiente de $t_n^{n-1}$
+   es el menor cofactor correspondiente, que es la Vandermonde de
+   $t_1, \ldots, t_{n-1}$).
+
+2. Para cada $k \in \{1, \ldots, n-1\}$, si $t_n = t_k$, las filas $k$ y $n$
+   de $A$ son idénticas, por lo que:
+$$p(t_k) = \det(A)\big|_{t_n = t_k} = 0$$
+
+   Luego $t_1, t_2, \ldots, t_{n-1}$ son $n-1$ raíces de $p(t_n)$.
+
+3. Como $p(t_n)$ tiene grado $n-1$ y exactamente $n-1$ raíces, se factoriza
+   completamente:
+
+$$p(t_n) = C \cdot (t_n - t_1)(t_n - t_2)\cdots(t_n - t_{n-1})$$
+
+   donde $C$ es el coeficiente líder de $t_n^{n-1}$, que es precisamente la
+   Vandermonde de $t_1, \ldots, t_{n-1}$:
+
+$$C = \det(A_{n-1}) = \prod_{1 \leq i < j \leq n-1}(t_j - t_i) \quad
+\text{(hipótesis inductiva)}$$
+
+4. Sustituyendo:
+
+$$\det(A) = \prod_{1 \leq i < j \leq n-1}(t_j - t_i) \cdot \prod_{k=1}^{n-1}(t_n - t_k)
+           = \prod_{1 \leq i < j \leq n}(t_j - t_i)$$
+
+Esto completa la inducción. $\blacksquare$
+
+---
+
+## Consecuencia: no singularidad
+
+Dado que los nodos son **distintos**, se tiene $t_j \neq t_i$ para todo $i \neq j$,
+de modo que cada factor $(t_j - t_i) \neq 0$. Por lo tanto:
+
+$$\det(A) = \prod_{1 \leq i < j \leq n}(t_j - t_i) \neq 0$$
+
+Una matriz cuadrada es no singular si y solo si su determinante es distinto de
+cero, luego:
+
+$$\boxed{A \text{ es no singular} \iff t_1, t_2, \ldots, t_n \text{ son distintos}}$$
+
+---
+
 **7.7** Compare el costo de formar una matriz de Vandermonde inductivamente, como en la Sección 7.2.1 con el costo utilizando exponenciación explícita.
+
+---
 
 **7.2.1 Evaluación de Polinomios**
 
@@ -63,7 +566,109 @@ lo cual es superior al uso de exponenciación explícita.
 
 Otras manipulaciones del polinomio interpolante, como la diferenciación o la integración, también son relativamente sencillas con la representación en base monomial.
 
+---
+
+#### Costo de Formación de la Matriz de Vandermonde
+
+**Definición del problema**
+
+Se desea formar la matriz de Vandermonde $A \in \mathbb{R}^{n \times n}$ con entradas $a_{ij} = t_i^{j-1}$, para $i, j = 1, \ldots, n$.
+
+---
+
+#### Método 1: Exponenciación explícita
+
+Cada entrada se calcula directamente como $a_{ij} = t_i^{j-1}$.
+
+**Costo por entrada**
+
+Calcular $t_i^{j-1}$ mediante multiplicaciones sucesivas requiere $j-2$
+multiplicaciones para $j \geq 2$ (y $0$ para $j=1$, pues $t_i^0 = 1$).
+
+**Costo total**
+
+Sumando sobre todas las entradas de la matriz:
+
+$$\sum_{i=1}^{n}\sum_{j=2}^{n}(j-2)
+  = n \sum_{j=2}^{n}(j-2)
+  = n \sum_{k=0}^{n-2} k
+  = n \cdot \frac{(n-2)(n-1)}{2}$$
+
+$$\boxed{M_{\text{explícita}} = \frac{n(n-1)(n-2)}{2} \text{ multiplicaciones}}$$
+
+Adicionalmente, si no se reutilizan las potencias entre filas (distintos $t_i$),
+este costo se repite íntegramente para cada fila.
+
+---
+
+#### Método 2: Recurrencia inductiva (Sección 7.2.1)
+
+Se utiliza la relación:
+
+$$a_{i,1} = 1, \qquad a_{i,j} = t_i \cdot a_{i,j-1}, \quad j = 2, \ldots, n$$
+
+Es decir, cada nueva columna se obtiene multiplicando la columna anterior por
+$t_i$, exactamente como el esquema de Horner.
+
+**Costo por fila**
+
+Para la fila $i$ se realizan $n-1$ multiplicaciones (una por cada paso
+$j = 2, 3, \ldots, n$).
+
+**Costo total**
+
+$$\boxed{M_{\text{inductiva}} = n(n-1) \text{ multiplicaciones}}$$
+
+---
+
+## Comparación directa
+
+| Método             | Multiplicaciones           | Orden    |
+|:-------------------|:--------------------------:|:--------:|
+| Exponenciación     | $\dfrac{n(n-1)(n-2)}{2}$  | $O(n^3)$ |
+| **Inductivo**      | $n(n-1)$                   | $O(n^2)$ |
+| **Factor de mejora** | $\dfrac{n-2}{2}$         | $O(n)$   |
+
+La recurrencia es un factor $\dfrac{n-2}{2}$ veces más barata: la mejora
+**crece linealmente** con $n$.
+
+#### Ejemplo numérico para $n = 10$
+
+$$M_{\text{explícita}} = \frac{10 \cdot 9 \cdot 8}{2} = 360 \text{ mult.}$$
+
+$$M_{\text{inductiva}} = 10 \cdot 9 = 90 \text{ mult.}$$
+
+$$\text{Factor de mejora} = \frac{360}{90} = 4 = \frac{n-2}{2} = \frac{8}{2} \checkmark$$
+
+---
+
+#### ¿Por qué la recurrencia es más eficiente?
+
+La exponenciación explícita **recalcula desde cero** cada potencia $t_i^{j-1}$,
+ignorando que $t_i^{j-1} = t_i \cdot t_i^{j-2}$ ya fue computado en el paso
+anterior. La recurrencia inductiva **reutiliza** cada resultado previo:
+
+$$a_{i,j} = t_i \cdot \underbrace{a_{i,j-1}}_{\text{ya calculado}},$$
+
+reduciendo el trabajo de $j-2$ multiplicaciones por entrada a exactamente
+**una sola multiplicación** por entrada. Es el mismo principio del esquema de
+Horner aplicado a la construcción de las potencias.
+
+---
+
+#### Resumen
+
+$$\frac{M_{\text{explícita}}}{M_{\text{inductiva}}}
+  = \frac{\,\tfrac{n(n-1)(n-2)}{2}\,}{n(n-1)}
+  = \frac{n-2}{2} \xrightarrow{n \to \infty} \infty$$
+
+El método inductivo es **asintóticamente superior**: pasa de $O(n^3)$ a $O(n^2)$,
+una reducción completa de un orden de magnitud en la complejidad computacional,
+simplemente explotando la estructura multiplicativa de las potencias.
+
 **7.8** Utilice la interpolación de Lagrange para derivar la fórmulas dadas en la Sección 5.2.5 para inversa interpolación cuadrática.
+
+---
 
 **5.2.5 Interpolación Inversa**
 
@@ -98,17 +703,146 @@ Tomando $a = 1$, $b = 2$ y $c = 3$ como valores iniciales, la secuencia de itera
 
 ---
 
+#### Derivación de la Interpolación Cuadrática Inversa mediante Lagrange
+
+**Configuración del problema**
+
+Se tienen tres puntos aproximados $a, b, c$ con valores de función $f_a = f(a)$, $f_b = f(b)$, $f_c = f(c)$
+
+En la **interpolación inversa** se trata $x$ como función de $y = f(x)$,
+ajustando un polinomio cuadrático $p(y)$ a los tres pares de datos:
+
+$$(f_a,\, a), \quad (f_b,\, b), \quad (f_c,\, c)$$
+
+La siguiente iteración es simplemente $p(0)$, es decir, el valor de $x$
+que correspondería a $f(x) = 0$.
+
+---
+
+#### Polinomio interpolador de Lagrange
+
+Los polinomios base de Lagrange con nodos $f_a, f_b, f_c$ son:
+
+$$L_a(y) = \frac{(y - f_b)(y - f_c)}{(f_a - f_b)(f_a - f_c)}$$
+
+$$L_b(y) = \frac{(y - f_a)(y - f_c)}{(f_b - f_a)(f_b - f_c)}$$
+
+$$L_c(y) = \frac{(y - f_a)(y - f_b)}{(f_c - f_a)(f_c - f_b)}$$
+
+El polinomio interpolador es:
+
+$$p(y) = a\, L_a(y) + b\, L_b(y) + c\, L_c(y)$$
+
+---
+
+#### Evaluación en $y = 0$
+
+La siguiente iteración es $p(0)$. Evaluando cada base:
+
+$$L_a(0) = \frac{(-f_b)(-f_c)}{(f_a - f_b)(f_a - f_c)}
+          = \frac{f_b\, f_c}{(f_a - f_b)(f_a - f_c)}$$
+
+$$L_b(0) = \frac{(-f_a)(-f_c)}{(f_b - f_a)(f_b - f_c)}
+          = \frac{f_a\, f_c}{(f_b - f_a)(f_b - f_c)}$$
+
+$$L_c(0) = \frac{(-f_a)(-f_b)}{(f_c - f_a)(f_c - f_b)}
+          = \frac{f_a\, f_b}{(f_c - f_a)(f_c - f_b)}$$
+
+Entonces:
+
+$$p(0) = \frac{a\, f_b f_c}{(f_a-f_b)(f_a-f_c)}
+       + \frac{b\, f_a f_c}{(f_b-f_a)(f_b-f_c)}
+       + \frac{c\, f_a f_b}{(f_c-f_a)(f_c-f_b)}$$
+
+---
+
+#### Introducción de las variables auxiliares
+
+Se definen las razones:
+
+$$u = \frac{f_b}{f_c}, \qquad v = \frac{f_b}{f_a}, \qquad w = \frac{f_a}{f_c}$$
+
+Nótese que $uv = \dfrac{f_b^2}{f_a f_c}$ y $vw = \dfrac{f_b}{f_c} = u$, con la
+relación $w = u/v$.
+
+#### Reescritura de los denominadores
+
+Se factoriza $f_a$ de $(f_a - f_b)$, $f_c$ de $(f_a - f_c)$, etc.:
+
+$$f_a - f_b = f_a(1 - v), \qquad
+  f_a - f_c = f_c(w - 1), \qquad
+  f_b - f_a = f_a(v - 1)$$
+
+$$f_b - f_c = f_c(u - 1), \qquad
+  f_c - f_a = f_c(1 - w), \qquad
+  f_c - f_b = f_c(1 - u)$$
+
+#### Reescritura de cada término
+
+**Término $a$:**
+
+$$\frac{a\, f_b f_c}{(f_a-f_b)(f_a-f_c)}
+= \frac{a\, f_b f_c}{f_a(1-v)\cdot f_c(w-1)}
+= \frac{a\, f_b}{f_a(1-v)(w-1)}
+= \frac{a\, v}{(1-v)(w-1)}$$
+
+**Término $b$:**
+
+$$\frac{b\, f_a f_c}{(f_b-f_a)(f_b-f_c)}
+= \frac{b\, f_a f_c}{f_a(v-1)\cdot f_c(u-1)}
+= \frac{b}{(v-1)(u-1)}$$
+
+**Término $c$:**
+
+$$\frac{c\, f_a f_b}{(f_c-f_a)(f_c-f_b)}
+= \frac{c\, f_a f_b}{f_c(1-w)\cdot f_c(1-u)}
+= \frac{c\, w\, u}{(1-w)(1-u)}$$
+
+Observando que $wu = \dfrac{f_a}{f_c}\cdot\dfrac{f_b}{f_c}$ y reagrupando
+signos para unificar el denominador común:
+
+$$q = (w-1)(u-1)(v-1)$$
+
+se puede escribir $p(0) = \dfrac{\text{numerador}}{q}$ donde el numerador es:
+
+$$p = v\bigl[w(u-w)(c-b) - (1-u)(b-a)\bigr]$$
+
+---
+
+**Fórmulas finales**
+
+Reuniendo todo, la iteración de **interpolación cuadrática inversa** queda:
+
+$$\boxed{u = \frac{f_b}{f_c}, \qquad v = \frac{f_b}{f_a}, \qquad w = \frac{f_a}{f_c}}$$
+
+$$\boxed{p = v\bigl[w(u-w)(c-b)-(1-u)(b-a)\bigr], \qquad q = (w-1)(u-1)(v-1)}$$
+
+$$\boxed{x_{\text{nuevo}} = p(0) = b - \frac{p}{q}}$$
+
+---
+
+**Interpretación geométrica**
+
+| Interpolación estándar | Interpolación inversa |
+|:-----------------------|:----------------------|
+| Se ajusta $p(x) \approx f(x)$ | Se ajusta $p(y) \approx x(y)$ |
+| Se resuelve $p(x) = 0$ (puede no tener raíces reales) | Se evalúa $p(0)$ (siempre definido) |
+| Requiere resolver ecuación cuadrática | Solo requiere sustitución directa |
+
+La formulación inversa **evita los problemas** de raíces complejas e indeterminación
+en la elección de raíz, a costa de requerir que $f$ sea localmente inyectiva
+(invertible) en la vecindad de la raíz buscada.
+
+---
+
 #### Computing Problems
 
-**7.1** _(a)_  Escriba una rutina que utilice la regla de Horner para evaluar un polinomio $p(t)$ dado su grado $n$, un array $x$ que contiene sus coeficientes, y el valor $t$ de la variable independiente en que debe ser evaluado.
+**7.1** _(a)_  Escriba una rutina que utilice la regla de Horner para evaluar un polinomio $p(t)$ dado su grado $\text{n}$, un array $x$ que contiene sus coeficientes, y el valor $\text{t}$ de la variable independiente en que debe ser evaluado.
 
 _(b)_ Agregue opciones a su rutina para evaluar la derivada $p'(t)$ o la integral $\int_a^b p(t)dt$, dados $a$ y $b$.
 
-**7.2** _(a)_  Escriba una rutina para calcular el
-Interpolante polinomial de Newton para un conjunto dado
-de puntos de datos, y una segunda rutina para evaluar el
-interpolante de Newton en un valor de argumento dado
-utilizando la regla de Horner.
+**7.2** _(a)_  Escriba una rutina para calcular el Interpolante polinomial de Newton para un conjunto dado
+de puntos de datos, y una segunda rutina para evaluar el interpolante de Newton en un valor de argumento dado utilizando la regla de Horner.
 
 _(b)_ Escriba una rutina para calcular el nuevo Interpolante polinomial de Newton cuando un se agrega un nuevo punto de datos.
 
