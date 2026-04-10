@@ -841,8 +841,7 @@ en la elección de raíz, a costa de requerir que $f$ sea localmente inyectiva
 
 _(b)_ Agregue opciones a su rutina para evaluar la derivada $p'(t)$ o la integral $\int_a^b p(t)dt$, dados $a$ y $b$.
 
-**7.2** _(a)_  Escriba una rutina para calcular el Interpolante polinomial de Newton para un conjunto dado
-de puntos de datos, y una segunda rutina para evaluar el interpolante de Newton en un valor de argumento dado utilizando la regla de Horner.
+**7.2** _(a)_  Escriba una rutina para calcular el Interpolante polinomial de Newton para un conjunto dado de puntos de datos, y una segunda rutina para evaluar el interpolante de Newton en un valor de argumento dado utilizando la regla de Horner.
 
 _(b)_ Escriba una rutina para calcular el nuevo Interpolante polinomial de Newton cuando un se agrega un nuevo punto de datos.
 
@@ -851,7 +850,7 @@ escriba una rutina recursiva que implemente la parte _(a)_ llamando a su rutina 
 
 **7.3** _(a)_ Escriba el sistema de ecuaciones derivado en el Ejemplo 7.6 en forma matricial.
 
-**7.6 Interpolación con splines cúbicos**
+**Ejempolo 7.6 Interpolación con splines cúbicos**
 
 Para ilustrar la interpolación con splines, determinaremos el spline cúbico natural interpolante a través de tres puntos de datos $(t_i, y_i)$, $i = 1, 2, 3$. 
 
