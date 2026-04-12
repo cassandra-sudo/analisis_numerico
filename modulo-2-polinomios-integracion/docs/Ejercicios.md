@@ -848,25 +848,73 @@ _(b)_ Escriba una rutina para calcular el nuevo Interpolante polinomial de Newto
 _(c)_ Si su lenguaje de programación admite recursión,
 escriba una rutina recursiva que implemente la parte _(a)_ llamando a su rutina para la parte _(b)_ recursivamente. Compare su rendimiento con la de su implementación original.
 
-**7.3** _(a)_ Escriba el sistema de ecuaciones derivado en el Ejemplo 7.6 en forma matricial.
+### Problema 7.3 (a)
 
-**Ejempolo 7.6 Interpolación con splines cúbicos**
+Considere la interpolación spline cúbica natural para tres puntos de datos $(t_1, y_1)$, $(t_2, y_2)$ y $(t_3, y_3)$, usando dos polinomios:
 
-Para ilustrar la interpolación con splines, determinaremos el spline cúbico natural interpolante a través de tres puntos de datos $(t_i, y_i)$, $i = 1, 2, 3$. 
+$$
+p_1(t) = \alpha_1 + \alpha_2 t + \alpha_3 t^2 + \alpha_4 t^3
+$$
 
-El interpolante requerido es una función cúbica por tramos definida por polinomios cúbicos separados en cada uno de los dos intervalos $[t_1, t_2]$ y $[t_2, t_3]$. Denotamos estos dos polinomios por:
+$$
+p_2(t) = \beta_1 + \beta_2 t + \beta_3 t^2 + \beta_4 t^3
+$$
 
-$p_1(t) = \alpha_1 + \alpha_2 t + \alpha_3 t^2 + \alpha_4 t^3$
+El sistema de ecuaciones viene dado por:
 
-$p_2(t) = \beta_1 + \beta_2 t + \beta_3 t^2 + \beta_4 t^3$
+**Interpolación:**
+$$
+\alpha_1 + \alpha_2 t_1 + \alpha_3 t_1^2 + \alpha_4 t_1^3 = y_1
+$$
+$$
+\alpha_1 + \alpha_2 t_2 + \alpha_3 t_2^2 + \alpha_4 t_2^3 = y_2
+$$
+$$
+\beta_1 + \beta_2 t_2 + \beta_3 t_2^2 + \beta_4 t_2^3 = y_2
+$$
+$$
+\beta_1 + \beta_2 t_3 + \beta_3 t_3^2 + \beta_4 t_3^3 = y_3
+$$
 
-Hay ocho parámetros por determinar, por lo que necesitaremos ocho ecuaciones. 
+**Continuidad de la primera derivada en $t_2$:**
+$$
+\alpha_2 + 2\alpha_3 t_2 + 3\alpha_4 t_2^2 = \beta_2 + 2\beta_3 t_2 + 3\beta_4 t_2^2
+$$
 
-Exigir que la función cúbica interpole los datos en los extremos del primer intervalo produce las dos ecuaciones:
+**Continuidad de la segunda derivada en $t_2$:**
+$$
+2\alpha_3 + 6\alpha_4 t_2 = 2\beta_3 + 6\beta_4 t_2
+$$
 
-$\alpha_1 + \alpha_2 t_1 + \alpha_3 t_1^2 + \alpha_4 t_1^3 = y_1$
+**Condiciones de spline natural:**
+$$
+2\alpha_3 + 6\alpha_4 t_1 = 0
+$$
+$$
+2\beta_3 + 6\beta_4 t_3 = 0
+$$
 
-$\alpha_1 + \alpha_2 t_2 + \alpha_3 t_2^2 + \alpha_4 t_2^3 = y_2$
+
+
+---
+
+**Instrucción:**  
+Escriba este sistema en forma matricial:
+$$
+A \mathbf{x} = \mathbf{b}
+$$
+donde
+$$
+\mathbf{x} = (\alpha_1, \alpha_2, \alpha_3, \alpha_4, \beta_1, \beta_2, \beta_3, \beta_4)^T
+$$
+
+**Solución 7.3 _(a)_**
+
+## 7.3 (a) — Sistema en forma matricial
+
+El vector de incógnitas es $[\alpha_1, \alpha_2, \alpha_3, \alpha_4, \beta_1, \beta_2, \beta_3, \beta_4]^T$ y el sistema $Ax = b$ queda:
+
+$$\begin{bmatrix} 1 & t_1 & t_1^2 & t_1^3 & 0 & 0 & 0 & 0 \\ 1 & t_2 & t_2^2 & t_2^3 & 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 & 1 & t_2 & t_2^2 & t_2^3 \\ 0 & 0 & 0 & 0 & 1 & t_3 & t_3^2 & t_3^3 \\ 0 & 1 & 2t_2 & 3t_2^2 & 0 & -1 & -2t_2 & -3t_2^2 \\ 0 & 0 & 2 & 6t_2 & 0 & 0 & -2 & -6t_2 \\ 0 & 0 & 2 & 6t_1 & 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 & 0 & 0 & 2 & 6t_3 \end{bmatrix} \begin{bmatrix} \alpha_1 \\ \alpha_2 \\ \alpha_3 \\ \alpha_4 \\ \beta_1 \\ \beta_2 \\ \beta_3 \\ \beta_4 \end{bmatrix} = \begin{bmatrix} y_1 \\ y_2 \\ y_2 \\ y_3 \\ 0 \\ 0 \\ 0 \\ 0 \end{bmatrix}$$
 
 _(b)_ Utilice una rutina de biblioteca o una propia.
 diseño, para resolver el sistema lineal $8 x 8$ resultante utilizando los datos proporcionados en el Ejemplo 7.1.
@@ -976,7 +1024,7 @@ _(b)_ Utilice una rutina de spline cúbico para interpolar los mismos datos y vu
 
 _(c)_ ¿Cuál de los dos interpolantes es más preciso en la mayor parte del dominio?
 
-(d) ¿Cuál de los dos interpolantes es más preciso entre $1$ y $2$?.
+_(d)_ ¿Cuál de los dos interpolantes es más preciso entre $1$ y $2$?.
 
 **7.7** Consideremos los siguientes datos demográficos de Estados Unidos:
 
@@ -1094,19 +1142,205 @@ $$(a)\; \int_a^b x^2\,dx = \frac{b^3}{3} - \frac{a^3}{3}$$
 
 $$(b)\; \int_a^b x^3\,dx = \frac{b^4}{4} - \frac{a^4}{4}$$
 
+---
+
+## 3. La regla de Simpson proporciona resultados exactos para f(x) = x² y f(x) = x³
+
+La regla de Simpson con h = (b-a)/2 y nodos x0=a, x1=(a+b)/2, x2=b es:
+
+$$\frac{h}{3}(f_0 + 4f_1 + f_2)$$
+
+### (a) f(x) = x²
+
+Con $f_0 = a^2$, $f_1 = \left(\frac{a+b}{2}\right)^2$, $f_2 = b^2$, $h = \frac{b-a}{2}$:
+
+$$\text{Simpson} = \frac{b-a}{6}\left(a^2 + 4\cdot\frac{(a+b)^2}{4} + b^2\right) = \frac{b-a}{6}(a^2 + (a+b)^2 + b^2)$$
+
+$$= \frac{b-a}{6}(2a^2 + 2ab + 2b^2) = \frac{b-a}{3}(a^2 + ab + b^2)$$
+
+Valor exacto:
+
+$$\int_a^b x^2\,dx = \frac{b^3 - a^3}{3} = \frac{(b-a)(b^2 + ab + a^2)}{3}$$
+
+Ambos coinciden exactamente. $\checkmark$
+
+### (b) f(x) = x³
+
+Con $f_0 = a^3$, $f_1 = \left(\frac{a+b}{2}\right)^3$, $f_2 = b^3$, $h = \frac{b-a}{2}$:
+
+$$\text{Simpson} = \frac{b-a}{6}\left(a^3 + \frac{(a+b)^3}{2} + b^3\right)$$
+
+Expandiendo $(a+b)^3 = a^3 + 3a^2b + 3ab^2 + b^3$:
+
+$$= \frac{b-a}{12}(3a^3 + 3a^2b + 3ab^2 + 3b^3) = \frac{b-a}{4}(a^2+b^2)(a+b)$$
+
+Valor exacto:
+
+$$\int_a^b x^3\,dx = \frac{b^4 - a^4}{4} = \frac{(b^2+a^2)(b+a)(b-a)}{4}$$
+
+Ambos coinciden exactamente. $\checkmark$
+
+**Conclusión:** la regla de Simpson integra exactamente polinomios de grado hasta 3, aunque usa solo 3 puntos (orden de exactitud 3).
+
+---
+
 **4.** Integrando el polinomio de interpolación de Lagrange
 
 $$P_1(x) = f_0 \frac{x - x_1}{x_0 - x_1} + f_1 \frac{x - x_0}{x_1 - x_0}$$
 
 en el intervalo $[x_0, x_1]$, deduzca la regla del trapecio.
 
+**Deducción de la regla del trapecio**
+
+Integrando el polinomio de interpolación de Lagrange $P_1(x)$ en $[x_0, x_1]$:
+
+$$\int_{x_0}^{x_1} P_1(x)\,dx = \int_{x_0}^{x_1} \left[ f_0 \frac{x - x_1}{x_0 - x_1} + f_1 \frac{x - x_0}{x_1 - x_0} \right] dx$$
+
+Con $h = x_1 - x_0$ se tiene $x_0 - x_1 = -h$ y $x_1 - x_0 = h$, entonces:
+
+$$= \int_{x_0}^{x_1} \left[ -\frac{f_0}{h}(x - x_1) + \frac{f_1}{h}(x - x_0) \right] dx$$
+
+Integrando término a término:
+
+$$\int_{x_0}^{x_1} (x - x_1)\,dx = \left[\frac{(x-x_1)^2}{2}\right]_{x_0}^{x_1} = 0 - \frac{(x_0-x_1)^2}{2} = -\frac{h^2}{2}$$
+
+$$\int_{x_0}^{x_1} (x - x_0)\,dx = \left[\frac{(x-x_0)^2}{2}\right]_{x_0}^{x_1} = \frac{(x_1-x_0)^2}{2} = \frac{h^2}{2}$$
+
+Sustituyendo:
+
+$$\int_{x_0}^{x_1} P_1(x)\,dx = -\frac{f_0}{h}\cdot\left(-\frac{h^2}{2}\right) + \frac{f_1}{h}\cdot\frac{h^2}{2} = \frac{h}{2}f_0 + \frac{h}{2}f_1$$
+
+$$\boxed{\int_{x_0}^{x_1} f(x)\,dx \approx \frac{h}{2}(f_0 + f_1)}$$
+
+que es precisamente la regla del trapecio. $\checkmark$
+
 **5.** Determine el grado de precisión de la regla del trapecio. Para ello es suficiente con aplicar la regla en el intervalo $[0, 1]$ a las funciones $f(x) = 1, x, x^2$.
+
+**Grado de precisión de la regla del trapecio**
+
+El grado de precisión es el mayor grado $n$ tal que la regla integra 
+exactamente todos los polinomios de grado $\leq n$.
+
+Aplicamos la regla del trapecio en $[0,1]$ con $h = 1$, $x_0 = 0$, $x_1 = 1$:
+
+$$\int_0^1 f(x)\,dx \approx \frac{h}{2}(f_0 + f_1) = \frac{1}{2}(f(0) + f(1))$$
+
+### f(x) = 1
+
+$$\text{Trapecio} = \frac{1}{2}(1 + 1) = 1$$
+
+$$\text{Exacto} = \int_0^1 1\,dx = 1 \quad \checkmark$$
+
+### f(x) = x
+
+$$\text{Trapecio} = \frac{1}{2}(0 + 1) = \frac{1}{2}$$
+
+$$\text{Exacto} = \int_0^1 x\,dx = \frac{1}{2} \quad \checkmark$$
+
+### f(x) = x²
+
+$$\text{Trapecio} = \frac{1}{2}(0 + 1) = \frac{1}{2}$$
+
+$$\text{Exacto} = \int_0^1 x^2\,dx = \frac{1}{3} \quad \times$$
+
+**Conclusión:** la regla del trapecio integra exactamente $f(x) = 1$ y 
+$f(x) = x$, pero falla para $f(x) = x^2$. Por lo tanto su grado de 
+precisión es $\mathbf{1}$.
 
 **6.** Determine el grado de precisión de la regla de Simpson. Para ello es suficiente con aplicar la regla en el intervalo $[0, 2]$ a las cinco funciones $f(x) = 1,\, x,\, x^2,\, x^3\;y\; x^4$. Contraste su resultando con el grado de precisión de la regla $\frac{3}{8}$ de Simpson.
 
 <img src="../../images/fig_7_5.png" alt="interpolation" width="75%"/>
 
+**Grado de precisión de la regla de Simpson**
+
+Aplicamos la regla de Simpson en $[0,2]$ con $h = 1$, nodos $x_0=0$, $x_1=1$, $x_2=2$:
+
+$$\frac{h}{3}(f_0 + 4f_1 + f_2) = \frac{1}{3}(f(0) + 4f(1) + f(2))$$
+
+**f(x) = 1**
+$$\text{Simpson} = \frac{1}{3}(1 + 4 + 1) = 2 \qquad \text{Exacto} = \int_0^2 1\,dx = 2 \quad \checkmark$$
+
+**f(x) = x**
+$$\text{Simpson} = \frac{1}{3}(0 + 4 + 2) = 2 \qquad \text{Exacto} = \int_0^2 x\,dx = 2 \quad \checkmark$$
+
+**f(x) = x²**
+$$\text{Simpson} = \frac{1}{3}(0 + 4 + 4) = \frac{8}{3} \qquad \text{Exacto} = \int_0^2 x^2\,dx = \frac{8}{3} \quad \checkmark$$
+
+**f(x) = x³**
+$$\text{Simpson} = \frac{1}{3}(0 + 4 + 8) = 4 \qquad \text{Exacto} = \int_0^2 x^3\,dx = 4 \quad \checkmark$$
+
+**f(x) = x⁴**
+$$\text{Simpson} = \frac{1}{3}(0 + 4 + 16) = \frac{20}{3} \qquad \text{Exacto} = \int_0^2 x^4\,dx = \frac{32}{5} \quad \times$$
+
+**Conclusión:** la regla de Simpson integra exactamente hasta $x^3$ pero 
+falla en $x^4$. Su grado de precisión es $\mathbf{3}$.
+
+---
+
+**Contraste con la regla 3/8 de Simpson**
+
+Aplicamos la regla 3/8 en $[0,3]$ con $h = 1$, nodos $x_0=0$, $x_1=1$, $x_2=2$, $x_3=3$:
+
+$$\frac{3h}{8}(f_0 + 3f_1 + 3f_2 + f_3) = \frac{3}{8}(f(0) + 3f(1) + 3f(2) + f(3))$$
+
+**f(x) = x³**
+$$\text{3/8} = \frac{3}{8}(0 + 3 + 24 + 27) = \frac{3}{8}(54) = \frac{81}{4} \qquad \text{Exacto} = \int_0^3 x^3\,dx = \frac{81}{4} \quad \checkmark$$
+
+**f(x) = x⁴**
+$$\text{3/8} = \frac{3}{8}(0 + 3 + 48 + 81) = \frac{3}{8}(132) = \frac{396}{8} = \frac{99}{2}$$
+
+$$\text{Exacto} = \int_0^3 x^4\,dx = \frac{243}{5} \quad \times$$
+
+**Conclusión:** la regla 3/8 de Simpson también integra exactamente hasta 
+$x^3$ y falla en $x^4$. Su grado de precisión es igualmente $\mathbf{3}$.
+
+Aunque ambas reglas usan distinto número de nodos (3 vs 4), comparten el 
+mismo grado de precisión. La regla 3/8 no gana precisión respecto a 
+Simpson estándar — su ventaja es práctica: permite subdividir intervalos 
+en número de subintervalos múltiplo de 3.
+
 **7.** Determine el grado de precisión de la regla de Boole. Para ello es suficiente con aplicar la regla en el intervalo $[0, 4]$ a las siete funciones $f(x) = 1,\, x,\, x^2,\, x^3,\, x^4,\, x^5\; y \; x^6$.
+
+**Grado de precisión de la regla de Boole**
+
+Aplicamos la regla de Boole en $[0,4]$ con $h = 1$, nodos $x_0=0$, $x_1=1$, $x_2=2$, $x_3=3$, $x_4=4$:
+
+$$\frac{2h}{45}(7f_0 + 32f_1 + 12f_2 + 32f_3 + 7f_4) = \frac{2}{45}(7f(0) + 32f(1) + 12f(2) + 32f(3) + 7f(4))$$
+
+**f(x) = 1**
+$$\text{Boole} = \frac{2}{45}(7 + 32 + 12 + 32 + 7) = \frac{2}{45}(90) = 4 \qquad \text{Exacto} = \int_0^4 1\,dx = 4 \quad \checkmark$$
+
+**f(x) = x**
+$$\text{Boole} = \frac{2}{45}(0 + 32 + 24 + 96 + 28) = \frac{2}{45}(180) = 8 \qquad \text{Exacto} = \int_0^4 x\,dx = 8 \quad \checkmark$$
+
+**f(x) = x²**
+$$\text{Boole} = \frac{2}{45}(0 + 32 + 48 + 288 + 112) = \frac{2}{45}(480) = \frac{64}{3} \qquad \text{Exacto} = \int_0^4 x^2\,dx = \frac{64}{3} \quad \checkmark$$
+
+**f(x) = x³**
+$$\text{Boole} = \frac{2}{45}(0 + 32 + 96 + 864 + 448) = \frac{2}{45}(1440) = 64 \qquad \text{Exacto} = \int_0^4 x^3\,dx = 64 \quad \checkmark$$
+
+**f(x) = x⁴**
+$$\text{Boole} = \frac{2}{45}(0 + 32 + 192 + 2592 + 1792) = \frac{2}{45}(4608) = \frac{1024}{5}$$
+
+$$\text{Exacto} = \int_0^4 x^4\,dx = \frac{1024}{5} \quad \checkmark$$
+
+**f(x) = x⁵**
+$$\text{Boole} = \frac{2}{45}(0 + 32 + 384 + 7776 + 7168) = \frac{2}{45}(15360) = \frac{2048}{3}$$
+
+$$\text{Exacto} = \int_0^4 x^5\,dx = \frac{4096}{6} = \frac{2048}{3} \quad \checkmark$$
+
+**f(x) = x⁶**
+$$\text{Boole} = \frac{2}{45}(0 + 32 + 768 + 23328 + 28672) = \frac{2}{45}(52800) = \frac{7040}{3}$$
+
+$$\text{Exacto} = \int_0^4 x^6\,dx = \frac{4^7}{7} = \frac{16384}{7} \quad \times$$
+
+**Conclusión:** la regla de Boole integra exactamente hasta $x^5$ pero 
+falla en $x^6$. Su grado de precisión es $\mathbf{5}$.
+
+Esto es consistente con el patrón general: una regla de cuadratura con 
+$n+1$ nodos tiene grado de precisión al menos $n$, y las reglas de Newton-Cotes 
+con número par de subintervalos ganan un grado adicional. Boole usa 4 
+subintervalos (5 nodos), por lo que su grado de precisión es $4+1 = 5$.
 
 **8.** Los intervalos de los Ejercicios 5, 6 y 7 fueron elegidos para que el cálculo de los nodos de integración fuera sencillo. No obstante, sea cual sea el intervalo de integración $[a,b]$ en el que queramos integrar la función $f$, cada una de las cuatro fórmulas de cuadratura $(4)–(7)$ tiene el grado de precisión determinado en los Ejercicios $5, 6\; y\; 7$, respectivamente. Una fórmula de cuadratura en un intervalo $[a,b]$ puede obtenerse a partir de una fórmula de cuadratura en un intervalo $[c,d]$ haciendo el cambio de variables dado por la función lineal
 
@@ -1116,11 +1350,82 @@ tomando $dx = \frac{b-a}{d-c} dt$.
 
 _(a)_ Compruebe que $x = g(t)$ es la línea recta que pasa por los puntos $(c,a)$ y $(d,b)$.
 
+**Cambio de variables y grado de precisión en intervalo general [a,b]**
+
+La función lineal de cambio de variables es:
+
+$$x = g(t) = \frac{b-a}{d-c}t + \frac{ad-bc}{d-c}, \qquad dx = \frac{b-a}{d-c}\,dt$$
+
+**g(t) pasa por los puntos (c,a) y (d,b)**
+
+Evaluando en $t = c$:
+$$g(c) = \frac{b-a}{d-c}c + \frac{ad-bc}{d-c} = \frac{(b-a)c + ad - bc}{d-c} = \frac{bc - ac + ad - bc}{d-c} = \frac{a(d-c)}{d-c} = a \quad \checkmark$$
+
+Evaluando en $t = d$:
+$$g(d) = \frac{b-a}{d-c}d + \frac{ad-bc}{d-c} = \frac{(b-a)d + ad - bc}{d-c} = \frac{bd - ad + ad - bc}{d-c} = \frac{b(d-c)}{d-c} = b \quad \checkmark$$
+
 _(b)_ Compruebe que la regla del trapecio tiene el mismo grado de precisión en cualquier intervalo $[a,b]$ que en el intervalo $[0,1]$.
+
+**Regla del trapecio en [a,b]**
+
+Aplicando el cambio de variables con $[c,d] = [0,1]$, $g(t) = (b-a)t + a$:
+
+$$\int_a^b f(x)\,dx = \int_0^1 f(g(t))(b-a)\,dt$$
+
+Aplicando la regla del trapecio en $[0,1]$:
+
+$$\approx (b-a)\cdot\frac{1}{2}(f(g(0)) + f(g(1))) = \frac{b-a}{2}(f(a) + f(b))$$
+
+Para $f(x) = x^2$, el error en $[0,1]$ fue $\frac{1}{2} - \frac{1}{3} \neq 0$.
+Bajo el cambio $x = (b-a)t + a$, $f(g(t)) = ((b-a)t+a)^2$ sigue siendo 
+un polinomio de grado 2 en $t$, por lo que la regla del trapecio también 
+falla para $x^2$ en cualquier $[a,b]$.
+
+El grado de precisión es $\mathbf{1}$ en cualquier intervalo $[a,b]$. $\checkmark$
+
+---
 
 _(c)_ Compruebe que la regla de Simpson tiene el mismo grado de precisión en cualquier intervalo $[a,b]$ que en el intervalo $[0,2]$.
 
+**Regla de Simpson en [a,b]**
+
+Aplicando el cambio de variables con $[c,d] = [0,2]$, $g(t) = \frac{b-a}{2}t + a$:
+
+$$\int_a^b f(x)\,dx = \int_0^2 f(g(t))\frac{b-a}{2}\,dt$$
+
+Aplicando Simpson en $[0,2]$ con $h=1$:
+
+$$\approx \frac{b-a}{2}\cdot\frac{1}{3}(f(g(0)) + 4f(g(1)) + f(g(2))) = \frac{b-a}{6}\left(f(a) + 4f\!\left(\frac{a+b}{2}\right) + f(b)\right)$$
+
+Bajo el cambio $x = \frac{b-a}{2}t + a$, cualquier polinomio $f(x) = x^k$ 
+se transforma en un polinomio de grado $k$ en $t$. Como Simpson integra 
+exactamente hasta grado 3 en $[0,2]$, también integra exactamente hasta 
+grado 3 en cualquier $[a,b]$.
+
+El grado de precisión es $\mathbf{3}$ en cualquier intervalo $[a,b]$. $\checkmark$
+
+---
+
 _(d)_ Compruebe que la regla de Boole tiene el mismo grado de precisión en cualquier intervalo $[a,b]$ que en el intervalo $[0,4]$.
+
+**Regla de Boole en [a,b]**
+
+Aplicando el cambio de variables con $[c,d] = [0,4]$, $g(t) = \frac{b-a}{4}t + a$:
+
+$$\int_a^b f(x)\,dx = \int_0^4 f(g(t))\frac{b-a}{4}\,dt$$
+
+Aplicando Boole en $[0,4]$ con $h=1$:
+
+$$\approx \frac{b-a}{4}\cdot\frac{2}{45}\left(7f(g(0)) + 32f(g(1)) + 12f(g(2)) + 32f(g(3)) + 7f(g(4))\right)$$
+
+$$= \frac{b-a}{90}\left(7f(a) + 32f\!\left(\frac{a+3b}{4}\right) + 12f\!\left(\frac{a+b}{2}\right) + 32f\!\left(\frac{3a+b}{4}\right) + 7f(b)\right)$$
+
+Bajo el cambio lineal, cualquier $f(x) = x^k$ se transforma en un 
+polinomio de grado $k$ en $t$. Como Boole integra exactamente hasta 
+grado 5 en $[0,4]$, también integra exactamente hasta grado 5 en 
+cualquier $[a,b]$.
+
+El grado de precisión es $\mathbf{5}$ en cualquier intervalo $[a,b]$. $\checkmark$
 
 **9.** Deduzca la regla $\frac{3}{8}$ de Simpson a partir del polinomio interpolador de Lagrange.  
 _Indicación_. Después de hacer el cambio de variable se obtienen integrales similares a:
@@ -1151,4 +1456,106 @@ $$
 \end{aligned}
 $$
 
+**Deducción de la regla 3/8 de Simpson desde el polinomio de Lagrange**
+
+El polinomio interpolador de Lagrange con 4 nodos $x_0, x_1, x_2, x_3$ 
+equiespaciados con paso $h$ es:
+
+$$P_3(x) = f_0 L_0(x) + f_1 L_1(x) + f_2 L_2(x) + f_3 L_3(x)$$
+
+Haciendo el cambio de variable $x = x_0 + ht$, $dx = h\,dt$, los nodos 
+se transforman en $t = 0, 1, 2, 3$ y la integral queda:
+
+$$\int_{x_0}^{x_3} f(x)\,dx \approx -f_0\frac{h}{6}\int_0^3(t-1)(t-2)(t-3)\,dt + f_1\frac{h}{2}\int_0^3 t(t-2)(t-3)\,dt$$
+$$- f_2\frac{h}{2}\int_0^3 t(t-1)(t-3)\,dt + f_3\frac{h}{6}\int_0^3 t(t-1)(t-2)\,dt$$
+
+Evaluando cada integral:
+
+**Integral de $f_0$:**
+$$\int_0^3(t-1)(t-2)(t-3)\,dt = \int_0^3(t^3 - 6t^2 + 11t - 6)\,dt = \left[\frac{t^4}{4} - 2t^3 + \frac{11t^2}{2} - 6t\right]_0^3 = -\frac{9}{4}$$
+
+$$\Rightarrow -f_0\frac{h}{6}\cdot\left(-\frac{9}{4}\right) = \frac{3h}{8}f_0$$
+
+**Integral de $f_1$:**
+$$\int_0^3 t(t-2)(t-3)\,dt = \int_0^3(t^3 - 5t^2 + 6t)\,dt = \left[\frac{t^4}{4} - \frac{5t^3}{3} + 3t^2\right]_0^3 = \frac{9}{4}$$
+
+$$\Rightarrow f_1\frac{h}{2}\cdot\frac{9}{4} = \frac{9h}{8}f_1$$
+
+**Integral de $f_2$:**
+$$\int_0^3 t(t-1)(t-3)\,dt = \int_0^3(t^3 - 4t^2 + 3t)\,dt = \left[\frac{t^4}{4} - \frac{4t^3}{3} + \frac{3t^2}{2}\right]_0^3 = -\frac{9}{4}$$
+
+$$\Rightarrow -f_2\frac{h}{2}\cdot\left(-\frac{9}{4}\right) = \frac{9h}{8}f_2$$
+
+**Integral de $f_3$:**
+$$\int_0^3 t(t-1)(t-2)\,dt = \int_0^3(t^3 - 3t^2 + 2t)\,dt = \left[\frac{t^4}{4} - t^3 + t^2\right]_0^3 = \frac{9}{4}$$
+
+$$\Rightarrow f_3\frac{h}{6}\cdot\frac{9}{4} = \frac{3h}{8}f_3$$
+
+Sumando los cuatro términos:
+
+$$\int_{x_0}^{x_3} f(x)\,dx \approx \frac{3h}{8}f_0 + \frac{9h}{8}f_1 + \frac{9h}{8}f_2 + \frac{3h}{8}f_3$$
+
+$$\boxed{\int_{x_0}^{x_3} f(x)\,dx \approx \frac{3h}{8}(f_0 + 3f_1 + 3f_2 + f_3)}$$
+
+que es precisamente la regla $\frac{3}{8}$ de Simpson. $\checkmark$
+
 **10.** Deduzca la fórmula cerrada de Newton-Cotes usando el polinomio interpolador de Lagrange de grado $5$ para los $6$ nodos equiespaciados $x_k = x_0 + kh$, con $k = 0, 1, \ldots, 5$.
+
+**Fórmula cerrada de Newton-Cotes con 6 nodos (grado 5)**
+
+Con 6 nodos equiespaciados $x_k = x_0 + kh$, $k = 0,1,\ldots,5$, el 
+polinomio interpolador de Lagrange de grado 5 es:
+
+$$P_5(x) = \sum_{k=0}^{5} f_k L_k(x), \qquad L_k(x) = \prod_{\substack{j=0 \\ j\neq k}}^{5} \frac{x - x_j}{x_k - x_j}$$
+
+Haciendo el cambio de variable $x = x_0 + ht$, $dx = h\,dt$, los nodos 
+se transforman en $t = 0,1,2,3,4,5$ y los factores de Lagrange quedan:
+
+$$L_k(t) = \prod_{\substack{j=0 \\ j\neq k}}^{5} \frac{t-j}{k-j}$$
+
+La integral se transforma en:
+
+$$\int_{x_0}^{x_5} f(x)\,dx \approx h\sum_{k=0}^{5} f_k \int_0^5 L_k(t)\,dt = h\sum_{k=0}^{5} f_k \,C_k$$
+
+Calculando cada coeficiente $C_k = \int_0^5 L_k(t)\,dt$:
+
+**$C_0$:**
+$$L_0(t) = \frac{(t-1)(t-2)(t-3)(t-4)(t-5)}{(-1)(-2)(-3)(-4)(-5)} = -\frac{1}{120}(t-1)(t-2)(t-3)(t-4)(t-5)$$
+
+$$C_0 = -\frac{1}{120}\int_0^5(t-1)(t-2)(t-3)(t-4)(t-5)\,dt = \frac{19}{144}$$
+
+**$C_1$:**
+$$L_1(t) = \frac{t(t-2)(t-3)(t-4)(t-5)}{(1)(-1)(-2)(-3)(-4)} = \frac{1}{24}\,t(t-2)(t-3)(t-4)(t-5)$$
+
+$$C_1 = \frac{1}{24}\int_0^5 t(t-2)(t-3)(t-4)(t-5)\,dt = \frac{75}{144}$$
+
+**$C_2$:**
+$$L_2(t) = \frac{t(t-1)(t-3)(t-4)(t-5)}{(2)(1)(-1)(-2)(-3)} = -\frac{1}{12}\,t(t-1)(t-3)(t-4)(t-5)$$
+
+$$C_2 = -\frac{1}{12}\int_0^5 t(t-1)(t-3)(t-4)(t-5)\,dt = \frac{50}{144}$$
+
+**$C_3$:**
+
+Por simetría del intervalo $[0,5]$: $C_3 = C_2 = \dfrac{50}{144}$
+
+**$C_4$:**
+
+Por simetría: $C_4 = C_1 = \dfrac{75}{144}$
+
+**$C_5$:**
+
+Por simetría: $C_5 = C_0 = \dfrac{19}{144}$
+
+Verificación: $\displaystyle\sum_{k=0}^{5} C_k = \frac{19+75+50+50+75+19}{144} = \frac{288}{144} = 2 = \frac{x_5 - x_0}{h} \quad\checkmark$
+
+Sustituyendo:
+
+$$\int_{x_0}^{x_5} f(x)\,dx \approx h\cdot\frac{1}{144}(19f_0 + 75f_1 + 50f_2 + 50f_3 + 75f_4 + 19f_5)$$
+
+$$\boxed{\int_{x_0}^{x_5} f(x)\,dx \approx \frac{5h}{288}(19f_0 + 75f_1 + 50f_2 + 50f_3 + 75f_4 + 19f_5)}$$
+
+Esta es la **regla de Weddle modificada** o fórmula cerrada de 
+Newton-Cotes de 6 nodos. Tiene grado de precisión $\mathbf{5}$, igual 
+que la regla de Boole, pero usa un nodo adicional sin ganar precisión 
+extra — esto ocurre porque el número de subintervalos (5) es impar, 
+lo que impide el incremento de grado que sí ocurre con número par.
