@@ -273,14 +273,16 @@ ALGORITMO Newton-Raphson(f, f', x₀, ε, N):
 
 **Teorema 2.5 (Teorema de Newton-Raphson).** Supongamos que la función $f \in C^2[a, b]$ y que existe un número $p \in [a, b]$ tal que $f(p) = 0$. Si $f'(p) \neq 0$, entonces existe $\delta > 0$ tal que la sucesión $\{p_k\}_{k=0}^{\infty}$ definida por el proceso iterativo
 
-$$p_k = g(p_{k-1}) = p_{k-1} - \frac{f(p_{k-1})}{f'(p_{k-1})} \qquad \text{para } k = 1, 2, \ldots \tag{4}$$
+$$
+p_k = g(p_{k-1}) = p_{k-1} - \frac{f(p_{k-1})}{f'(p_{k-1})}, \quad k = 1,2,\ldots
+$$
 
 converge a $p$ cualquiera que sea la aproximación inicial $p_0 \in [p - \delta, p + \delta]$.
 
 *Observación.* La función $g(x)$ definida por la relación
 
 $$
-g(x) = x - \frac{f(x)}{f'(x)} \tag{5}
+g(x) = x - \frac{f(x)}{f'(x)}
 $$
 
 se llama **función de iteración de Newton-Raphson**. Puesto que $f(p) = 0$, es fácil ver que $g(p) = p$, lo que nos dice que la iteración de Newton-Raphson para hallar una raíz de la ecuación $f(x) = 0$ consiste en hallar un punto fijo de $g(x)$.
@@ -288,25 +290,25 @@ se llama **función de iteración de Newton-Raphson**. Puesto que $f(p) = 0$, es
 *Demostración.* La construcción geométrica de $p_1$ que se muestra en la Figura 2.13 no nos ayuda a entender por qué $p_0$ debe estar cerca de $p$ ni por qué la continuidad de $f''(x)$ es esencial. Nuestro análisis comienza con el polinomio de Taylor de grado $n = 1$ de $f$ alrededor de $p_0$ y su correspondiente resto:
 
 $$
-f(x) = f(p_0) + f'(p_0)(x - p_0) + \frac{f''(c)(x - p_0)^2}{2!}, \tag{6}
+f(x) = f(p_0) + f'(p_0)(x - p_0) + \frac{f''(c)(x - p_0)^2}{2!}
 $$
 
 donde $c$ es un punto intermedio entre $p_0$ y $x$. Poniendo $x = p$ en la relación (6) y usando que $f(p) = 0$ obtenemos
 
 $$
-0 = f(p_0) + f'(p_0)(p - p_0) + \frac{f''(c)(p - p_0)^2}{2!}. \tag{7}
+0 = f(p_0) + f'(p_0)(p - p_0) + \frac{f''(c)(p - p_0)^2}{2!}.
 $$
 
 Si $p_0$ está suficientemente cerca de $p$, entonces el último sumando del miembro derecho de (7) será pequeño, comparado con la suma de los dos primeros, así que podemos despreciarlo y usar la aproximación
 
 $$
-0 \approx f(p_0) + f'(p_0)(p - p_0). \tag{8}
+0 \approx f(p_0) + f'(p_0)(p - p_0).
 $$
 
 Despejando $p$ en la relación (8), obtenemos $p \approx p_0 - f(p_0)/f'(p_0)$, expresión que usamos para definir $p_1$, la siguiente aproximación a la raíz
 
 $$
-p_1 = p_0 - \frac{f(p_0)}{f'(p_0)}. \tag{9}
+p_1 = p_0 - \frac{f(p_0)}{f'(p_0)}.
 $$
 
 Poniendo $p_{k-1}$ en lugar de $p_0$ en la relación (9), la regla general (4) queda establecida. En muchas aplicaciones, esto es todo lo que hace falta entender y saber usar; sin embargo, para comprender totalmente lo que ocurre, necesitamos considerar la iteración de Newton-Raphson como una iteración de punto fijo y aplicar el Teorema 2.2 en nuestra situación. La clave nos la da el análisis de $g'(x)$:
@@ -404,13 +406,13 @@ Aplica Newton-Raphson para encontrar la raíz de $f(x) = x^3 - x - 1$ con $x_0 =
 
 $f'(x) = 3x^2 - 1$. Iteración: $x_{n+1} = x_n - \dfrac{x_n^3 - x_n - 1}{3x_n^2 - 1}$.
 
-| $n$ | $x_n$        | $f(x_n)$       | $f'(x_n)$  | $|e_n|$      |
-|-----|--------------|----------------|------------|--------------|
-| 0   | 1.500000     | 0.875000       | 5.750000   | —            |
-| 1   | 1.347826     | 0.100682       | 4.448150   | 0.152174     |
-| 2   | 1.325200     | 0.002058       | 4.268250   | 0.022626     |
-| 3   | 1.324718     | 0.000001       | 4.264534   | 0.000482     |
-| 4   | 1.324718     | $< 10^{-12}$   | —          | $< 10^{-9}$  |
+| n | xₙ       | f(xₙ)     | f′(xₙ)   | |eₙ| |
+|---|-----------|------------|-----------|-------|
+| 0 | 1.500000  | 0.875000   | 5.750000  | — |
+| 1 | 1.347826  | 0.100682   | 4.448150  | 0.152174 |
+| 2 | 1.325200  | 0.002058   | 4.268250  | 0.022626 |
+| 3 | 1.324718  | 0.000001   | 4.264534  | 0.000482 |
+| 4 | 1.324718  | < 10⁻¹²    | —         | < 10⁻⁹ |
 
 La raíz es $x^* \approx \mathbf{1.324718}$. El cociente $|e_{n+1}|/|e_n|^2$ converge hacia la constante asintótica $C = |f''(x^*)|/(2|f'(x^*)|) = |6x^*|/(2|3(x^*)^2-1|) \approx 7.948/8.529 \approx 0.93$. La convergencia es cuadrática (el número de dígitos correctos se duplica en cada paso).
 
@@ -424,12 +426,12 @@ La ecuación $f(x) = e^{-x} - x = 0$ modela un equilibrio poblacional. Encuentra
 
 $f(x) = e^{-x} - x$, $f'(x) = -e^{-x} - 1$. Iteración: $x_{n+1} = x_n - \dfrac{e^{-x_n} - x_n}{-e^{-x_n} - 1} = x_n + \dfrac{e^{-x_n} - x_n}{e^{-x_n} + 1}$.
 
-| $n$ | $x_n$       | $f(x_n)$     | Error estimado  |
-|-----|-------------|--------------|-----------------|
-| 0   | 0.500000    | 0.106531     | —               |
-| 1   | 0.566311    | 0.001245     | 0.066311        |
-| 2   | 0.567143    | $1.7\times10^{-7}$ | 0.000832   |
-| 3   | 0.567143    | $< 10^{-14}$ | $< 10^{-8}$     |
+| n | xₙ       | f(xₙ)      | Error estimado |
+|---|-----------|-------------|----------------|
+| 0 | 0.500000  | 0.106531    | — |
+| 1 | 0.566311  | 0.001245    | 0.066311 |
+| 2 | 0.567143  | 1.7 × 10⁻⁷  | 0.000832 |
+| 3 | 0.567143  | < 10⁻¹⁴     | < 10⁻⁸ |
 
 $x^* \approx \mathbf{0.56714329}$. Esta es la **constante de Omega** $\Omega = W(1)$ donde $W$ es la función Lambert. Verificación: $e^{-0.56714} \approx 0.56714$. ✓
 
@@ -445,12 +447,12 @@ $\sqrt[5]{17}$ es la raíz positiva de $f(x) = x^5 - 17$. $f'(x) = 5x^4$.
 
 Iteración: $x_{n+1} = x_n - \dfrac{x_n^5 - 17}{5x_n^4} = \dfrac{4x_n^5 + 17}{5x_n^4} = \dfrac{4x_n}{5} + \dfrac{17}{5x_n^4}$.
 
-| $n$ | $x_n$       | $x_n^5$      | Error $|x_n - x^*|$ |
-|-----|-------------|--------------|---------------------|
-| 0   | 1.7000000   | 14.19857     | 0.0232              |
-| 1   | 1.7279327   | 17.08421     | 0.0048              |
-| 2   | 1.7231759   | 17.00023     | 0.000033            |
-| 3   | 1.7231434   | 17.00000     | $< 10^{-7}$         |
+| n | xₙ        | xₙ⁵        | Error |xₙ − x*| |
+|---|------------|-------------|----------------|
+| 0 | 1.7000000  | 14.19857    | 0.0232 |
+| 1 | 1.7279327  | 17.08421    | 0.0048 |
+| 2 | 1.7231759  | 17.00023    | 0.000033 |
+| 3 | 1.7231434  | 17.00000    | < 10⁻⁷ |
 
 $\sqrt[5]{17} \approx \mathbf{1.7231434}$. Verificación: $(1.7231434)^5 \approx 17.0000$. ✓
 
@@ -502,11 +504,25 @@ $$p = \frac{1 + \sqrt{5}}{2} \approx 1.618 \quad \text{(número áureo)}$$
 
 Es decir, el error satisface:
 
-$$\lim_{n\to\infty} \frac{|e_{n+1}|}{|e_n|^p} = \left(\frac{|f''(x^*)|}{2|f'(x^*)|}\right)^{p-1} = C$$
+$$
+\lim_{n\to\infty} \frac{|e_{n+1}|}{|e_n|^p}
+=
+\left(
+\frac{|f''(x^{*})|}{2|f'(x^{*})|}
+\right)^{p-1}
+=
+C
+$$
 
 **Demostración (esbozo).** Definamos $\phi_n = f[x_n, x_{n-1}]$ (diferencia dividida de orden 1). Usando la fórmula de diferencias divididas y la expansión de Taylor:
 
-$$x_{n+1} - x^* = -\frac{f''(\xi_n)}{2f'(\eta_n)} (x_n - x^*)(x_{n-1} - x^*)$$
+$$
+x_{n+1} - x^{*}
+=
+-\frac{f''(\xi_n)}{2f'(\eta_n)}
+(x_n - x^{*})
+(x_{n-1} - x^{*})
+$$
 
 Tomando valores absolutos: $|e_{n+1}| \approx C|e_n||e_{n-1}|$. Asumiendo $|e_n| \approx A\lambda^{p^n}$, se obtiene $p^{n+1} = p^n + p^{n-1}$, es decir, $p^2 = p + 1$, cuya raíz positiva es $p = (1+\sqrt{5})/2$. $\blacksquare$
 
