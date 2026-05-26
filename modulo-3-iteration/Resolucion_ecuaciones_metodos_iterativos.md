@@ -355,11 +355,11 @@ Para $x_0 > 0$ y $n$ suficientemente grande, $x_n > 0$ y la convergencia es cuad
 $$
 C
 =
-\dfrac{|f''(x^{*})|}{2|f'(x^{*})|}
+\frac{|f''(x^{*})|}{2|f'(x^{*})|}
 =
-\dfrac{2}{2 \cdot 2\sqrt{a}}
+\frac{2}{2 \cdot 2\sqrt{a}}
 =
-\dfrac{1}{2\sqrt{a}}
+\frac{1}{2\sqrt{a}}
 $$
 
 ---
@@ -457,8 +457,8 @@ $\sqrt[5]{17}$ es la raíz positiva de $f(x) = x^5 - 17$. $f'(x) = 5x^4$.
 
 Iteración: $x_{n+1} = x_n - \dfrac{x_n^5 - 17}{5x_n^4} = \dfrac{4x_n^5 + 17}{5x_n^4} = \dfrac{4x_n}{5} + \dfrac{17}{5x_n^4}$.
 
-| n | xₙ        | xₙ⁵        | Error |xₙ − x*| |
-|---|------------|-------------|----------------|
+| n | xₙ        | xₙ⁵        | abs(xₙ − x*) |
+|---|------------|-------------|---------------|
 | 0 | 1.7000000  | 14.19857    | 0.0232 |
 | 1 | 1.7279327  | 17.08421    | 0.0048 |
 | 2 | 1.7231759  | 17.00023    | 0.000033 |
