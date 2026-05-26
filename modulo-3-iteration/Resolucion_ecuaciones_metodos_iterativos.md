@@ -352,7 +352,7 @@ Para $x_0 > 0$ y $n$ suficientemente grande, $x_n > 0$ y la convergencia es cuad
 
 *(c)* La constante asintótica es 
 
-$$C = \frac{\lvert f''(x^*)\rvert}{2\lvert f'(x^*)\rvert} = \frac{2}{2 \cdot 2\sqrt{a}} = \frac{1}{2\sqrt{a}}$$
+$$C = \frac{\lvert f''(x^{\ast})\rvert}{2\lvert f'(x^{\ast})\rvert} = \frac{2}{2 \cdot 2\sqrt{a}} = \frac{1}{2\sqrt{a}}$$
 
 ---
 
