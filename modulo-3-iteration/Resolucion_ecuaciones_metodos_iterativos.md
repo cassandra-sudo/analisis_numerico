@@ -320,7 +320,7 @@ $$
 Por hipótesis, sabemos que $f(p) = 0$; luego $g'(p) = 0$. Como $g(x)$ es continua y $g'(p) = 0$, podemos encontrar $\delta > 0$ tal que la hipótesis $|g'(x)| < 1$ del Teorema 2.2 se cumple en el intervalo $(p - \delta, p + \delta)$. Por consiguiente, que $p_0 \in (p - \delta, p + \delta)$ es una condición suficiente para que $p_0$ sea el punto de partida de una sucesión $\{p_k\}_{k=0}^{\infty}$ que converge a la única raíz de $f(x) = 0$ en dicho intervalo, siempre que $\delta$ sea elegido tal que
 
 $$
-\frac{|f(x)f''(x)|}{|f'(x)|^2} < 1 \qquad \text{para todo } x \in (p - \delta,\, p + \delta). \tag{10} \qquad \blacksquare
+\frac{|f(x)f''(x)|}{|f'(x)|^2} < 1 \qquad \text{para todo } x \in (p - \delta,\, p + \delta).
 $$
 
 ---
@@ -350,7 +350,17 @@ Para $x_0 > 0$ y $n$ suficientemente grande, $x_n > 0$ y la convergencia es cuad
 
 *(b)* Por la desigualdad AM-GM: $x_{n+1} = \frac{1}{2}\left(x_n + \frac{a}{x_n}\right) \geq \sqrt{x_n \cdot \frac{a}{x_n}} = \sqrt{a}$. La igualdad solo ocurre si $x_n = \sqrt{a}$. Para la monotonía cuando $n \geq 1$: $x_{n+1} \leq x_n$ iff $\frac{1}{2}(x_n + a/x_n) \leq x_n$ iff $a \leq x_n^2$. Para $n=1$: $x_1 \geq \sqrt{a}$ implica $x_1^2 \geq a$. ✓
 
-*(c)* La constante asintótica es $C = \dfrac{|f''(x^*)|}{2|f'(x^*)|} = \dfrac{2}{2 \cdot 2\sqrt{a}} = \dfrac{1}{2\sqrt{a}}$.
+*(c)* La constante asintótica es 
+
+$$
+C
+=
+\dfrac{|f''(x^{*})|}{2|f'(x^{*})|}
+=
+\dfrac{2}{2 \cdot 2\sqrt{a}}
+=
+\dfrac{1}{2\sqrt{a}}
+$$.
 
 ---
 
@@ -406,8 +416,8 @@ Aplica Newton-Raphson para encontrar la raíz de $f(x) = x^3 - x - 1$ con $x_0 =
 
 $f'(x) = 3x^2 - 1$. Iteración: $x_{n+1} = x_n - \dfrac{x_n^3 - x_n - 1}{3x_n^2 - 1}$.
 
-| n | xₙ       | f(xₙ)     | f′(xₙ)   | |eₙ| |
-|---|-----------|------------|-----------|-------|
+| n | xₙ       | f(xₙ)     | f′(xₙ)   | \|eₙ\| |
+|---|-----------|------------|-----------|---------|
 | 0 | 1.500000  | 0.875000   | 5.750000  | — |
 | 1 | 1.347826  | 0.100682   | 4.448150  | 0.152174 |
 | 2 | 1.325200  | 0.002058   | 4.268250  | 0.022626 |
