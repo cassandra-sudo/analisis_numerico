@@ -360,7 +360,7 @@ C
 \dfrac{2}{2 \cdot 2\sqrt{a}}
 =
 \dfrac{1}{2\sqrt{a}}
-$$.
+$$
 
 ---
 
