@@ -271,37 +271,57 @@ ALGORITMO Newton-Raphson(f, f', x₀, ε, N):
     RETORNAR x_N   // Mejor aproximación alcanzada
 ```
 
-### 2.3 Análisis de convergencia
+**Teorema 2.5 (Teorema de Newton-Raphson).** Supongamos que la función $f \in C^2[a, b]$ y que existe un número $p \in [a, b]$ tal que $f(p) = 0$. Si $f'(p) \neq 0$, entonces existe $\delta > 0$ tal que la sucesión $\{p_k\}_{k=0}^{\infty}$ definida por el proceso iterativo
 
-**Teorema (Convergencia cuadrática local).** Sea $x^*$ una raíz simple de $f$ (es decir, $f(x^*)=0$ y $f'(x^*)\neq 0$). Supóngase que $f \in \mathcal{C}^2$ en una vecindad de $x^*$. Entonces existe $\delta > 0$ tal que si $|x_0 - x^*| < \delta$, la sucesión de Newton-Raphson converge a $x^*$ y:
+$$
+p_k = g(p_{k-1}) = p_{k-1} - \frac{f(p_{k-1})}{f'(p_{k-1})} \qquad \text{para } k = 1, 2, \ldots \tag{4}
+$$
 
-$$\lim_{n\to\infty} \frac{|e_{n+1}|}{|e_n|^2} = \frac{|f''(x^*)|}{2|f'(x^*)|}$$
+converge a $p$ cualquiera que sea la aproximación inicial $p_0 \in [p - \delta, p + \delta]$.
 
-donde $e_n = x_n - x^*$.
+*Observación.* La función $g(x)$ definida por la relación
 
-**Demostración.** Por el Teorema de Taylor con residuo de Lagrange, aplicado a $f$ en torno a $x^*$:
+$$
+g(x) = x - \frac{f(x)}{f'(x)} \tag{5}
+$$
 
-$$0 = f(x^*) = f(x_n) + f'(x_n)(x^* - x_n) + \frac{f''(\xi_n)}{2}(x^* - x_n)^2$$
+se llama **función de iteración de Newton-Raphson**. Puesto que $f(p) = 0$, es fácil ver que $g(p) = p$, lo que nos dice que la iteración de Newton-Raphson para hallar una raíz de la ecuación $f(x) = 0$ consiste en hallar un punto fijo de $g(x)$.
 
-donde $\xi_n$ está entre $x_n$ y $x^*$. Dividiendo por $f'(x_n)$ (que es no nulo por hipótesis para $n$ suficientemente grande):
+*Demostración.* La construcción geométrica de $p_1$ que se muestra en la Figura 2.13 no nos ayuda a entender por qué $p_0$ debe estar cerca de $p$ ni por qué la continuidad de $f''(x)$ es esencial. Nuestro análisis comienza con el polinomio de Taylor de grado $n = 1$ de $f$ alrededor de $p_0$ y su correspondiente resto:
 
-$$\frac{f(x_n)}{f'(x_n)} = (x_n - x^*) - \frac{f''(\xi_n)}{2f'(x_n)}(x_n - x^*)^2 \cdot (-1)$$
+$$
+f(x) = f(p_0) + f'(p_0)(x - p_0) + \frac{f''(c)(x - p_0)^2}{2!}, \tag{6}
+$$
 
-Reorganizando y recordando que $x_{n+1} = x_n - f(x_n)/f'(x_n)$:
+donde $c$ es un punto intermedio entre $p_0$ y $x$. Poniendo $x = p$ en la relación (6) y usando que $f(p) = 0$ obtenemos
 
-$$e_{n+1} = x_{n+1} - x^* = -\frac{f''(\xi_n)}{2f'(x_n)} e_n^2$$
+$$
+0 = f(p_0) + f'(p_0)(p - p_0) + \frac{f''(c)(p - p_0)^2}{2!}. \tag{7}
+$$
 
-Tomando límite: $\dfrac{|e_{n+1}|}{|e_n|^2} \to \dfrac{|f''(x^*)|}{2|f'(x^*)|}$ cuando $n\to\infty$. $\blacksquare$
+Si $p_0$ está suficientemente cerca de $p$, entonces el último sumando del miembro derecho de (7) será pequeño, comparado con la suma de los dos primeros, así que podemos despreciarlo y usar la aproximación
 
-**El método es de orden 2 (cuadrático):** el número de dígitos correctos aproximadamente se duplica en cada iteración.
+$$
+0 \approx f(p_0) + f'(p_0)(p - p_0). \tag{8}
+$$
 
-### 2.4 Caso de raíz múltiple
+Despejando $p$ en la relación (8), obtenemos $p \approx p_0 - f(p_0)/f'(p_0)$, expresión que usamos para definir $p_1$, la siguiente aproximación a la raíz
 
-Si $x^*$ es raíz de multiplicidad $m > 1$ (es decir, $f(x^*) = f'(x^*) = \cdots = f^{(m-1)}(x^*) = 0$, $f^{(m)}(x^*) \neq 0$), el método Newton-Raphson pierde la convergencia cuadrática y se vuelve **lineal** con constante $(m-1)/m$. La variante corregida:
+$$
+p_1 = p_0 - \frac{f(p_0)}{f'(p_0)}. \tag{9}
+$$
 
-$$x_{n+1} = x_n - m \cdot \frac{f(x_n)}{f'(x_n)}$$
+Poniendo $p_{k-1}$ en lugar de $p_0$ en la relación (9), la regla general (4) queda establecida. En muchas aplicaciones, esto es todo lo que hace falta entender y saber usar; sin embargo, para comprender totalmente lo que ocurre, necesitamos considerar la iteración de Newton-Raphson como una iteración de punto fijo y aplicar el Teorema 2.2 en nuestra situación. La clave nos la da el análisis de $g'(x)$:
 
-restaura la convergencia cuadrática cuando la multiplicidad $m$ es conocida.
+$$
+g'(x) = 1 - \frac{f'(x)f'(x) - f(x)f''(x)}{(f'(x))^2} = \frac{f(x)f''(x)}{(f'(x))^2}.
+$$
+
+Por hipótesis, sabemos que $f(p) = 0$; luego $g'(p) = 0$. Como $g(x)$ es continua y $g'(p) = 0$, podemos encontrar $\delta > 0$ tal que la hipótesis $|g'(x)| < 1$ del Teorema 2.2 se cumple en el intervalo $(p - \delta, p + \delta)$. Por consiguiente, que $p_0 \in (p - \delta, p + \delta)$ es una condición suficiente para que $p_0$ sea el punto de partida de una sucesión $\{p_k\}_{k=0}^{\infty}$ que converge a la única raíz de $f(x) = 0$ en dicho intervalo, siempre que $\delta$ sea elegido tal que
+
+$$
+\frac{|f(x)f''(x)|}{|f'(x)|^2} < 1 \qquad \text{para todo } x \in (p - \delta,\, p + \delta). \tag{10} \qquad \blacksquare
+$$
 
 ---
 
