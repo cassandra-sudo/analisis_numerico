@@ -273,7 +273,7 @@ ALGORITMO Newton-Raphson(f, f', x₀, ε, N):
 
 **Teorema 2.5 (Teorema de Newton-Raphson).** Supongamos que la función $f \in C^2[a, b]$ y que existe un número $p \in [a, b]$ tal que $f(p) = 0$. Si $f'(p) \neq 0$, entonces existe $\delta > 0$ tal que la sucesión $\{p_k\}_{k=0}^{\infty}$ definida por el proceso iterativo
 
-$$ p_k = g(p_{k-1}) = p_{k-1} - \frac{f(p_{k-1})}{f'(p_{k-1})} \qquad \text{para } k = 1, 2, \ldots \tag{4} $$
+$$p_k = g(p_{k-1}) = p_{k-1} - \frac{f(p_{k-1})}{f'(p_{k-1})} \qquad \text{para } k = 1, 2, \ldots \tag{4}$$
 
 converge a $p$ cualquiera que sea la aproximación inicial $p_0 \in [p - \delta, p + \delta]$.
 
