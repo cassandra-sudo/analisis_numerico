@@ -353,8 +353,7 @@ Para $x_0 > 0$ y $n$ suficientemente grande, $x_n > 0$ y la convergencia es cuad
 *(c)* La constante asintótica es 
 
 $$
-C
-=
+C =
 \frac{|f''(x^{*})|}{2|f'(x^{*})|}
 =
 \frac{2}{2 \cdot 2\sqrt{a}}
@@ -515,10 +514,12 @@ $$p = \frac{1 + \sqrt{5}}{2} \approx 1.618 \quad \text{(número áureo)}$$
 Es decir, el error satisface:
 
 $$
-\lim_{n\to\infty} \frac{|e_{n+1}|}{|e_n|^p}
+\lim_{n \to \infty}
+\frac{\lvert e_{n+1} \rvert}{\lvert e_n \rvert^p}
 =
 \left(
-\frac{|f''(x^{*})|}{2|f'(x^{*})|}
+\frac{\lvert f''(x^{*}) \rvert}
+{2\lvert f'(x^{*}) \rvert}
 \right)^{p-1}
 =
 C
