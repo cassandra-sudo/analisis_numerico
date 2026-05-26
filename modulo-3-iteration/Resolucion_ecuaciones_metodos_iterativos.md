@@ -350,7 +350,9 @@ Para $x_0 > 0$ y $n$ suficientemente grande, $x_n > 0$ y la convergencia es cuad
 
 *(b)* Por la desigualdad AM-GM: $x_{n+1} = \frac{1}{2}\left(x_n + \frac{a}{x_n}\right) \geq \sqrt{x_n \cdot \frac{a}{x_n}} = \sqrt{a}$. La igualdad solo ocurre si $x_n = \sqrt{a}$. Para la monotonía cuando $n \geq 1$: $x_{n+1} \leq x_n$ iff $\frac{1}{2}(x_n + a/x_n) \leq x_n$ iff $a \leq x_n^2$. Para $n=1$: $x_1 \geq \sqrt{a}$ implica $x_1^2 \geq a$. ✓
 
-*(c)* La constante asintótica es $C = \frac{|f''(x^{*})|}{2|f'(x^{*})|} = \frac{2}{2 \cdot 2\sqrt{a}} = \frac{1}{2\sqrt{a}}$
+*(c)* La constante asintótica es 
+
+$$C = \frac{\lvert f''(x^{*})\rvert}{2\lvert f'(x^{*})\rvert} = \frac{2}{2 \cdot 2\sqrt{a}} = \frac{1}{2\sqrt{a}}$$
 
 ---
 
