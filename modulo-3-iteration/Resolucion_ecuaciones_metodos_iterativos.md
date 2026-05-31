@@ -342,6 +342,9 @@ Sea $f(x) = x^2 - a$ con $a > 0$. La iteración de Newton-Raphson aplicada a est
 **Solución:**
 
 *(a)* $f(x) = x^2 - a$, $f'(x) = 2x$. La iteración es:
+
+$$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$$
+
 $$x_{n+1} = x_n - \frac{x_n^2 - a}{2x_n} = \frac{2x_n^2 - x_n^2 + a}{2x_n} = \frac{x_n^2 + a}{2x_n} = \frac{1}{2}\left(x_n + \frac{a}{x_n}\right)$$
 
 Para la convergencia: $f''(x) = 2$, $f'(\sqrt{a}) = 2\sqrt{a} \neq 0$. El error satisface:
