@@ -632,7 +632,13 @@ La temperatura de ignición de un material satisface la ecuación implícita $f(
 
 **Solución:**
 
-$f(18) = 104976 - 1800 - 100000 = 3176 > 0$, $f(20) = 160000 - 2000 - 100000 = 58000 > 0$. Hay que buscar la raíz en $[0, 20]$. $f(0) = -10^5 < 0$, $f(18) > 0$, por lo que la raíz está en $(0, 18)$.
+$f(18) = 104976 - 1800 - 100000 = 3176 > 0$, 
+
+$f(20) = 160000 - 2000 - 100000 = 58000 > 0$. Hay que buscar la raíz en $[0, 20]$. 
+
+$f(0) = -10^5 < 0$, 
+
+$f(18) > 0$, por lo que la raíz está en $(0, 18)$.
 
 Usamos $T_0 = 15$, $T_1 = 18$: $f(15) = 50625 - 1500 - 100000 = -50875 < 0$.
 
